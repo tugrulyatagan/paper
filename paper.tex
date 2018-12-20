@@ -54,18 +54,6 @@ LoRa can change data rate by spreading symbols within a fixed channel bandwidth.
 \par TODO: Organization of the paper
 
 
-\section{Other Related Works}
-\par TODO: Performance evaluation of lora networks in a smart city scenario\cite{7996384}
-
-\par TODO: Scalability analysis of large-scale lorawan networks in ns-3 \cite{8090518}
-
-\par TODO: Lora scalability: A simulation model based on interference measurements \cite{s17061193}
-
-\par TODO: Impact of lora imperfect orthogonality: Analysis of link-level performance \cite{8267219}
-
-\par TODO: Scalability analysis of a lora network under imperfect orthogonality \cite{8430542}
-
-
 \section{LoRa}
 \par LoRa is the name of the physical layer Radio/Chipset technology that provides wireless link for low power wide area networks. LoRa uses proprietary spread spectrum modulation technique that is derivative of Chirp Spread Spectrum (CSS). LoRa is registered trademark of Semtech Corporation. LoRa has an open standard MAC protocol called LoRaWAN. LoRa and LoRaWAN terms are frequently and incorrectly used for each other.
 
@@ -101,6 +89,18 @@ Six different spread factors are available (between 7 and 12); increasing the sp
 \end{figure}
 
 
+\section{Other Related Works}
+\par TODO: Performance evaluation of lora networks in a smart city scenario\cite{7996384}
+
+\par TODO: Scalability analysis of large-scale lorawan networks in ns-3 \cite{8090518}
+
+\par TODO: Lora scalability: A simulation model based on interference measurements \cite{s17061193}
+
+\par TODO: Impact of lora imperfect orthogonality: Analysis of link-level performance \cite{8267219}
+
+\par TODO: Scalability analysis of a lora network under imperfect orthogonality \cite{8430542}
+
+
 \section{Proposed Technique}
 \par If GW force some of close end nodes to select higher SF even if they can able to communicate with lower SF, this will result lower collisions due to the orthogonality of different SF. Figure~\ref{fig:proposal_single_gw}
 
@@ -121,17 +121,19 @@ Six different spread factors are available (between 7 and 12); increasing the sp
 \end{figure}
 
 
-\section{Simulation Environment}
+\section{Simulation Environment and Results}
 A discrete event simulator is implemented in Python to simulate LoRa network performance. 
 https://github.com/tugrulyatagan/simlorafs
 
-\subsection{Link Model}
+\subsection{Simulation Environment}
+
+\subsubsection{Link Model}
 TODO
 
-\subsection{Interference Model}
+\subsubsection{Interference Model}
 TODO
 
-\subsection{Simulation Assumptions}
+\subsubsection{Simulation Assumptions}
 TODO
 
 \begin{figure}
@@ -155,8 +157,7 @@ TODO
 \label{fig:sf_10000}
 \end{figure}
 
-
-\section{Simulation Results}
+\subsection{Simulation Results}
 TODO: Evaluation
 
 
