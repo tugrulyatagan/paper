@@ -10,7 +10,7 @@
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 \begin{document}
 
-\title{Paper Title*\\
+\title{Paper Title*
 }
 
 
@@ -90,16 +90,18 @@ Six different spread factors are available (between 7 and 12); increasing the sp
 
 
 \section{Other Related Works}
-\par TODO: Performance evaluation of lora networks in a smart city scenario\cite{7996384}
+The literature related to the work presented in this paper has started growing recently. LPWAN technologies and especially LoRa/LoRaWAN attract researchers attention lately. We listed some of these works which studying  LoRaWAN and LoRa spreading factor.
 
-\par TODO: Scalability analysis of large-scale lorawan networks in ns-3 \cite{8090518}
+\par In \cite{7996384}, the authors evaluated the performance of LoRa networks in a smart city scenario. The
+authors proposed a link measurement and a link performance model for LoRa. The authors also proposed a SINR threshold matrix for modeling LoRa interference between simultaneous but different spreading factor LoRa transmissions. They implement a LoRa simulator in ns-3 to study scalability and performance of LoRaWAN networks. Their results show that LoRaWAN networks scale well as the number of nodes and gateways increases. They also show that spreading factor assignment has great effect on network performance.
 
-\par TODO: Lora scalability: A simulation model based on interference measurements \cite{s17061193}
+\par In \cite{8090518}, another LoRaWAN ns-3 simulator is presented. Authors introduced an error model for determining range as well as interference between multiple simultaneous LoRa transmissions. Their simulator supports LoRaWAN class A end devices, multiple gateways, both upstream and downstream confirmed messages. Their results show that allocating network parameters to end devices is hugely important for the performance of LoRaWAN networks.
 
-\par TODO: Impact of lora imperfect orthogonality: Analysis of link-level performance \cite{8267219}
+\par In \cite{s17061193}, the authors investigated single gateway LoRaWAN network scalability in terms of the number of end nodes using a simulation model based on real measurements. They measure the impact of two concurrent LoRa transmissions on each other by using physical LoRaWAN end devices and a gateway then they created a simulation model from measurements. Their results show that LoRaWAN has better scalability than pure Aloha since a LoRa packet may still go through under collision if the the last six symbols of preamble and header of the packet does not collide.
 
-\par TODO: Scalability analysis of a lora network under imperfect orthogonality \cite{8430542}
+\par In \cite{8267219}, the authors studied imperfect orthogonality between different LoRa spreading factor transmissions. The authors state that a LoRa transmission can be interfered even between different spreading factor transmissions when power of the interfering signal significantly overcomes the reference signal. Their experimental results show that this power difference is around 16 dB and this power difference can be seen when  interferer is close to receiver or multiple interferer can create this power difference cumulatively. 
 
+\par In \cite{8430542}, the authors investigated the impact of interference caused by simultaneous LoRa transmissions using the same spreading factor as well as different spreading factors. They derived aggregated co-SF and inter-SF interference power SIR distributions to capture the coverage performance with respect to the distance from the gateway for modeling interference in multiple gateway scenarios. Their results show that transmission among different spreading factors can cause a significant impact in high-density LoRaWAN networks.
 
 \section{Proposed Technique}
 \par If GW force some of close end nodes to select higher SF even if they can able to communicate with lower SF, this will result lower collisions due to the orthogonality of different SF. Figure~\ref{fig:proposal_single_gw}
@@ -167,7 +169,7 @@ TODO: Summary, future works
 
 
 \section*{Acknowledgment}
-This work is supported by Turkish Ministry of Development and Istanbul Technical University researcher support program under the Grant No. ITU-AYP-2017-1. The authors would also like to thank .TODO. for their guidance in .TODO.
+This work is supported by Turkish Ministry of Development and Istanbul Technical University researcher support program under the Grant No. ITU-AYP-2017-1.
 
 
 \bibliographystyle{IEEEtran}
