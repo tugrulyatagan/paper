@@ -64,22 +64,15 @@ LoRa can change data rate by spreading symbols within a fixed channel bandwidth.
 The spread factor is the ratio between symbol rate and chip rate. The ratio between symbol and chip rate is $2$\textsuperscript{spreadfactor}.\\
 Six different spread factors are available (between 7 and 12); increasing the spread factor makes the signal more robust to noise, but decreases the data rate.\\
 
-\par Lowest SF suitable area section is relatively higher then the others. Most of the end devices which close to GW will fall into this area. Figure~\ref{fig:problem1}
+\par Lowest SF suitable area section is relatively higher then the others. Most of the end devices which close to GW will fall into this area.
 
-\par End devices near the GW will probably select lowest SF all the time. Which results a lot of collisions between lowest SF transmissions while end device number near the GW increases. Figure~\ref{fig:problem2}
-
-\begin{figure}
-\centering
-\includegraphics[width=0.5\textwidth]{lora0}
-\caption{Different SF ranges.}
-\label{fig:problem1}
-\end{figure}
+\par End devices near the GW will probably select lowest SF all the time. Which results a lot of collisions between lowest SF transmissions while end device number near the GW increases. Figure~\ref{fig:collision}
 
 \begin{figure}
 \centering
-\includegraphics[width=0.5\textwidth]{lora1}
+\includegraphics[width=0.5\textwidth]{collision}
 \caption{Collision between nodes near the GW.}
-\label{fig:problem2}
+\label{fig:collision}
 \end{figure}
 
 
@@ -98,22 +91,22 @@ authors proposed a link measurement and a link performance model for LoRa. The a
 \par In \cite{8430542}, the authors investigated the impact of interference caused by simultaneous LoRa transmissions using the same spreading factor as well as different spreading factors. They derived aggregated co-SF and inter-SF interference power SIR distributions to capture the coverage performance with respect to the distance from the gateway for modeling interference in multiple gateway scenarios. Their results show that transmission among different spreading factors can cause a significant impact in high-density LoRaWAN networks.
 
 \section{Proposed Technique}
-\par If GW force some of close end nodes to select higher SF even if they can able to communicate with lower SF, this will result lower collisions due to the orthogonality of different SF. Figure~\ref{fig:proposal_single_gw}
+\par If GW force some of close end nodes to select higher SF even if they can able to communicate with lower SF, this will result lower collisions due to the orthogonality of different SF. Figure~\ref{fig:collision_solution_single_gw}
 
-\par GW can avoid increasing SF of end nodes which is close to other GW using location information obtained by triangulating the signal strength of end nodes. Figure~\ref{fig:proposal_multi_gw}
+\par GW can avoid increasing SF of end nodes which is close to other GW using location information obtained by triangulating the signal strength of end nodes. Figure~\ref{fig:collision_solution_multi_gw}
 
 \begin{figure}
 \centering
-\includegraphics[width=0.5\textwidth]{lora2}
+\includegraphics[width=0.5\textwidth]{collision_solution_single_gw}
 \caption{Collision between nodes near the GW can be prevented by using higher SF.}
-\label{fig:proposal_single_gw}
+\label{fig:collision_solution_single_gw}
 \end{figure}
 
 \begin{figure}
 \centering
-\includegraphics[width=0.5\textwidth]{lora3}
+\includegraphics[width=0.5\textwidth]{collision_solution_multi_gw}
 \caption{Collision prevention proposal for intersecting GWs.}
-\label{fig:proposal_multi_gw}
+\label{fig:collision_solution_multi_gw}
 \end{figure}
 
 
@@ -134,22 +127,29 @@ TODO
 
 \begin{figure}
 \centering
-\includegraphics[width=0.5\textwidth]{sf_1000}
-\caption{PDR of different SF when radius is 1000m.}
+\includegraphics[width=0.5\textwidth]{sf_pdr}
+\caption{PDR of different spreading factors.}
 \label{fig:sf_1000}
 \end{figure}
 
 \begin{figure}
 \centering
-\includegraphics[width=0.5\textwidth]{sf_3000}
-\caption{PDR of different SF when radius is 3000m.}
+\includegraphics[width=0.5\textwidth]{gw_pdr}
+\caption{PDR of different gateway numbers.}
 \label{fig:sf_3000}
 \end{figure}
 
 \begin{figure}
 \centering
-\includegraphics[width=0.5\textwidth]{sf_10000}
-\caption{PDR of different SF when radius is 10000m.}
+\includegraphics[width=0.5\textwidth]{r_pdr}
+\caption{PDR of different topology radius.}
+\label{fig:sf_10000}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[width=0.5\textwidth]{pr_pdr}
+\caption{PDR of different packet rates.}
 \label{fig:sf_10000}
 \end{figure}
 
