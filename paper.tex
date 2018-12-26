@@ -132,6 +132,9 @@ authors proposed a link measurement and a link performance model for LoRa. The a
 \section{Simulation Environment} \label{Simulation Environment}
 [TODO] A discrete event simulator is implemented in Python to simulate LoRa network performance. https://github.com/tugrulyatagan/simlorafs
 
+\subsection{Link Model}
+[TODO] Table \ref{table:gw_sf_sensitivity} \cite{SX1276}
+
 \begin{table}
 \centering
 \caption{Gateway Sensitivity for different SFs}
@@ -146,17 +149,17 @@ authors proposed a link measurement and a link performance model for LoRa. The a
 \hline
 \end{tabular}
 \end{table}
-[CITE:datasheet]
-
 
 \begin{equation} \label{eq:rx_sensitivity}
-P^{dBm}
+P^{dBm}_{RX} = P^{dBm}_{TX} + G^{dB}_{SYS} - L^{dB}_{SYS} - L^{dB}_{PATH}
 \end{equation}
 [CITE:modulation basics]
 
-
-\subsection{Link Model}
-[TODO]
+$P^{dBm}_{RX}$
+$P^{dBm}_{TX}$
+$G^{dB}_{SYS}$
+$L^{dB}_{SYS}$
+$L^{dB}_{PATH}$
 
 \subsection{Interference Model}
 [TODO]
