@@ -67,13 +67,13 @@ LoRa, Spreading Factor, IoT, LPWAN, Machine Learning
 \par LoRa is the name of the proprietary physical layer radio and chipset technology that provides wireless link solution for low power wide area networks. LoRa is designed and patented by Semtech Corporation. LoRa uses proprietary spread spectrum modulation technique that is derivative of Chirp Spread Spectrum (CSS). Chirp is a sinusoidal signal which its  frequency increases over time. The chirp frequency increases linearly and sweeps entire bandwidth. [CITE] We invite readers to refer to \cite{AN1200.22} for further details.
 
 \subsection{Spreading Factor}
-\par Spreading factor (SF) is the ratio between symbol rate and chip rate. The ratio between symbol and chip rate is equal to $2$\textsuperscript{SF}. SF can take values between 7 to 12. [CITE] SF also determines data rate of a LoRa transmission.
+\par Spreading factor (SF) is the ratio between symbol rate and chip rate. The ratio between symbol and chip rate is equal to $2$\textsuperscript{SF}. SF can take values between 7 to 12. SF also determines data rate of a LoRa transmission \cite{AN1200.22}.
 
 \begin{equation} \label{eq:bit_rate_sf}
 R_{b} = SF * \dfrac{\left[ \dfrac{4}{4+CR} \right] }{ \left[ \dfrac{2^{SF}}{BW} \right]} \ bits/sec
 \end{equation}
 
-Where SF is spreading factor $SF \in \{7,..,12\}$, CR is error correction code rate $CR \in \{1,..,4\}$ and BW is bandwidth in Hertz. [CITE:modulation basics]
+Where, SF is spreading factor $SF \in \{7,..,12\}$, CR is error correction code rate $CR \in \{1,..,4\}$ and $BW$ is bandwidth in Hertz \cite{AN1200.22}.
 
 \par While BW and CR are constant, as the SF increases the data rate decreases. Increasing SF makes the signal more resilient to noise thus increases the transmission range. Increasing SF also increases transmission duration which increases power consumption. Therefore it is possible to trade between data rate, range and power consumption by  changing SF.
 
@@ -130,10 +130,27 @@ authors proposed a link measurement and a link performance model for LoRa. The a
 
 
 \section{Simulation Environment} \label{Simulation Environment}
-[TODO] A discrete event simulator is implemented in Python to simulate LoRa network performance. https://github.com/tugrulyatagan/simlorafs
+\par [TODO] A discrete event simulator is implemented in Python to simulate LoRa network performance. https://github.com/tugrulyatagan/simlorafs
 
 \subsection{Link Model}
-[TODO] Table \ref{table:gw_sf_sensitivity} \cite{SX1276}
+\par [TODO] 
+
+
+The link budget of a wireless system or network is a measure of all the gains and losses from the
+transmitter, through the propagation channel, to the target receiver. These gains and losses include
+system gains and losses associated with the antenna, matching networks, etc. as well as losses
+associated propagation channel itself (either though modelling or measured data).
+Typically randomly varying channel mechanisms such as multipath and Doppler fading are taken into
+account by factoring additional margin depending on the anticipated severity.
+The link budget of a network wireless link can be expressed as:
+
+\begin{equation} \label{eq:rx_sensitivity}
+P^{dBm}_{RX} = P^{dBm}_{TX} + G^{dB}_{SYS} - L^{dB}_{SYS} - L^{dB}_{PATH}
+\end{equation}
+
+Where, $P^{dBm}_{RX}$ is the expected receive power at the receiver. $P^{dBm}_{TX}$ is the transmit power. $G^{dB}_{SYS}$ is the system gains such as transmitter and receiver antenna gain. $L^{dB}_{SYS}$ is the system losses such as transmitter and receiver line, circuit, antenna losses. $L^{dB}_{PATH}$ is the propagation path loss between transmitter and receiver antennas.
+
+\par Receive sensitivity of a LoRa gateway for different SFs and BWs can be found in Table \ref{table:gw_sf_sensitivity} \cite{SX1276}.
 
 \begin{table}
 \centering
@@ -149,17 +166,6 @@ authors proposed a link measurement and a link performance model for LoRa. The a
 \hline
 \end{tabular}
 \end{table}
-
-\begin{equation} \label{eq:rx_sensitivity}
-P^{dBm}_{RX} = P^{dBm}_{TX} + G^{dB}_{SYS} - L^{dB}_{SYS} - L^{dB}_{PATH}
-\end{equation}
-[CITE:modulation basics]
-
-$P^{dBm}_{RX}$
-$P^{dBm}_{TX}$
-$G^{dB}_{SYS}$
-$L^{dB}_{SYS}$
-$L^{dB}_{PATH}$
 
 \subsection{Interference Model}
 [TODO]
