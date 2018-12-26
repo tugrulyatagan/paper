@@ -35,75 +35,81 @@ LoRa, Spreading Factor, IoT, LPWAN, Machine Learning
 
 
 \section{Introduction}
-\par In the last few years, number of Internet of Things applications increase exponentially. \cite{7721743} Recent developments on LPWAN technologies has great impact on IoT application number growth. LPWAN technologies offer solutions to some of the oldest wireless communication challenges. Traditional wireless communication methods such as cellular networks (e.g., 2G, 3G, LTE) and short-range communication methods (e.g., Bluetooth, WiFi, Zigbee) cannot provide low power and long range at the same time. (CITE) Cellular networks can provide long range and high data rate but they are complex and consume too much power. Besides, most of the IoT applications don't require high data rate. Short-range communication methods can provide relatively low power consumption but their range is limited to a few hundred meters at best. \cite{7815384} LPWAN technologies fill the technology gap between short range and cellular communication by providing low power and long range communication. LPWAN technologies basically sacrifice data rate to provide low power consumption.
+\par In the last few years, number of Internet of Things applications increase exponentially. \cite{7721743} Recent developments on LPWAN technologies has great impact on IoT application number growth. LPWAN technologies offer solutions to some of the oldest wireless communication challenges. Traditional wireless communication methods such as cellular networks (e.g., 2G, 3G, LTE) and short-range communication methods (e.g., Bluetooth, WiFi, Zigbee) cannot provide low power and long range at the same time. [CITE] Cellular networks can provide long range and high data rate but they are complex and consume too much power. Besides, most of the IoT applications don't require high data rate. Short-range communication methods can provide relatively low power consumption but their range is limited to a few hundred meters at best. \cite{7815384} LPWAN technologies fill the technology gap between short range and cellular communication by providing low power and long range communication. LPWAN technologies basically sacrifice data rate to provide low power consumption.
 
-\par There are several emerging LPWAN technologies. LoRa, SigFox, NB-IoT and LTE-M are commonly used, well known LPWAN technologies. LoRa and SigFox use license free ISM frequency bands while NB-IoT and LTE-M use licensed frequency bands which brings extra cost. (CITE) Both LoRa and SigFox known for ultra low power consumption and resilient to interference while NB-IoT and LTE-M are promoted for higher data rate. LoRa has open standard MAC protocol called LoRaWAN. (CITE) LoRaWAN and SigFox MAC protocols are based on pure ALOHA medium access. (CITE) LoRaWAN networks can be deployed as private network. However, SigFox and NB-IoT supports only operator contracted deployments. (CITE) Number of messages that Sigfox end device can send in a day is limited to 140 packets for uplink and just 4 packets for downlink. Sigfox packet payload is limited to 12 bytes for uplink and 8 bytes for downlink. (CITE) However LoRa supports up to 243 bytes payload and NB-IoT supports up to 1600 bytes payload. (CITE) Sigfox maximum data rate is also very low 100 bps, on the other hand maximum data rate for LoRa and NB-IoT are 50 kbps and 200 kbps respectively. (CITE) 
+\par There are several emerging LPWAN technologies. LoRa, SigFox, NB-IoT and LTE-M are commonly used, well known LPWAN technologies. LoRa and SigFox use license free ISM frequency bands while NB-IoT and LTE-M use licensed frequency bands which brings extra cost. [CITE] Both LoRa and SigFox known for ultra low power consumption and resilient to interference while NB-IoT and LTE-M are promoted for higher data rate. LoRa has open standard MAC protocol called LoRaWAN. [CITE] LoRaWAN and SigFox MAC protocols are based on pure ALOHA medium access. [CITE] LoRaWAN networks can be deployed as private network. However, SigFox and NB-IoT supports only operator contracted deployments. [CITE] Number of messages that Sigfox end device can send in a day is limited to 140 packets for uplink and just 4 packets for downlink. Sigfox packet payload is limited to 12 bytes for uplink and 8 bytes for downlink. [CITE] However LoRa supports up to 243 bytes payload and NB-IoT supports up to 1600 bytes payload. [CITE] Sigfox maximum data rate is also very low 100 bps, on the other hand maximum data rate for LoRa and NB-IoT are 50 kbps and 200 kbps respectively. [CITE]
 
-\par LoRa can adjust data rate by spreading symbols within a fixed channel bandwidth. This enables tradeoff between receive sensitivity and transmission air time. (CITE) LoRa supports 6 different spreading factor option. Simultaneous same spreading factor transmissions are prone to collision however different spreading factor transmissions in same channel are orthogonal to each other, thus spreading factor assignment is crucial for overall network performance. (CITE) In this work, we introduce a custom made LoRa discrete event simulator to study LoRa spreading factor assignment issue. We also proposed an spreading factor assignment scheme to increase network performance with the help of machine learning methods and we verified our proposal using our simulator.
+\par LoRa can adjust data rate by spreading symbols within a fixed channel bandwidth. This enables tradeoff between receive sensitivity and transmission air time. [CITE] LoRa supports 6 different SF option. Simultaneous same SF transmissions are prone to collision however different SF transmissions in same channel are orthogonal to each other, thus SF assignment is crucial for overall network performance. [CITE] In this work, we introduce a custom made LoRa discrete event simulator to study LoRa SF assignment issue. We also proposed an SF assignment scheme to increase network performance with the help of machine learning methods and we verified our proposal using our simulator.
 
-\par The following section gives an overview about LoRa and LoRaWAN. Section \ref{Other Related Works} describes other related works. Section \ref{Proposed Technique} describes proposed technique for spreading factor assignment. Simulation environments are described and simulation results are shown in Section \ref{Simulation Environment and Results}. Finally, Section \ref{Conclusion} concludes the paper.
+\par The following two sections provides an background information about LoRaWAN and LoRa. Section \ref{Other Related Works} describes other related works. Section \ref{Proposed Technique} describes proposed technique for SF assignment. Simulation environments and results are shown in Section \ref{Simulation Environment} and \ref{Simulation Results}. Finally, Section \ref{Conclusion} concludes the paper.
 
 
-\section{LoRa} \label{LoRa}
-\par LoRa is the name of the physical layer Radio/Chipset technology that provides wireless link solution for low power wide area networks. LoRa uses proprietary spread spectrum modulation technique that is derivative of Chirp Spread Spectrum (CSS). LoRa is registered trademark of Semtech Corporation. LoRa has an open standard MAC protocol called LoRaWAN. LoRa and LoRaWAN terms are frequently and incorrectly used for each other.
+\section{LoRaWAN} \label{LoRaWAN}
+\par LoRa is a wireless link technology for LPWAN applications. LoRa has an open standard MAC protocol called LoRaWAN. LoRa and LoRaWAN terms are frequently and incorrectly used for each other.
 
-\subsection{LoRaWAN}
 \par LoRaWAN is a medium access control (MAC) layer protocol which designed for large scale LoRa networks. LoRaWAN is an open source standard developed and maintained by LoRa Alliance. LoRa Alliance is an open, non-profit organization dedicated to standardization of LoRaWAN. LoRa can be used without LoRaWAN as a wireless link technology, however LoRaWAN is developed considering well known LPWAN challenges and their best practice solutions. LoRaWAN also provides inter-operability between different LoRa networks. LoRaWAN is based on pure ALOHA medium access. LoRaWAN provides lightweight but powerful standard for wide range of LoRa IoT applications.
 
-\par TODO: Add LoRaWAN network architecture figure here.
+\par [TODO] Add LoRaWAN network architecture figure here.
 
 \par A typical LoRaWAN network consist of three network entities.
-\subsubsection{End node}
-Low power embedded device that communicates to gateways. LoRaWAN standard defines three classes for end devices which are Class A, Class B, and Class C for providing LPWAN solution to different scenarios. Class A end nodes generates uplink transmission at any time and only receives a period of time after uplink transmission. Class B end nodes extend Class A by adding scheduled receive windows for downlink transmission. Receive window is synchronized using beacon packet transmitted by gateway. Class C end nodes extend Class A by keeping receive window open unless they are transmitting. This provides low latency donwlink communication but requires more power consumption. (CITE) In this paper, we focused on class A end devices since Class A provides lowest power consumption.
 
-\subsubsection{Gateway}
-Devices that receive/transmit packets coming from/to end nodes. A typical gateway can receive from multiple channel at the same time. Gateways are typically connected to power grid so power consumption of a gateway is insignificant most of the deployments.
+\subsection{End node}
+\par LoRaWAN end node is low power embedded device that communicates to gateways. LoRaWAN standard defines three classes for end devices which are Class A, Class B, and Class C for providing LPWAN solution to different scenarios. Class A end nodes generates uplink transmission at any time and only receives a period of time after uplink transmission. Class B end nodes extend Class A by adding scheduled receive windows for downlink transmission. Receive window is synchronized using beacon packet transmitted by gateway. Class C end nodes extend Class A by keeping receive window open unless they are transmitting. This provides low latency donwlink communication but requires more power consumption. [CITE] In this paper, we focused on class A end devices since Class A provides lowest power consumption.
 
-\subsubsection{Network server}
-Server that provides MAC layer processing. NS routes messages from application to end nodes, and vice versa.
+\subsection{Gateway}
+\par LoRaWAN gateway is device that receive/transmit packets coming from/to end nodes. A typical gateway can receive from multiple channel at the same time. Gateways are typically connected to power grid so power consumption of a gateway is insignificant most of the deployments.
 
-\subsection{LoRa Modulation}
-\par TODO
-LoRa CSS modulation can spread the symbols.\\
-TODO frequency and band
-
-We invite readers to refer to \cite{AN1200.22} for further details.
-
-\par Spreading factor is the ratio between symbol rate and chip rate. (CITE) The ratio between symbol and chip rate is equal to $2$\textsuperscript{SF}. SF can take values between 7 to 12.
-
-and determines the LoRa symbol rate as: Rs = (BW/2SF). As the SF increases the symbol rate is lowered, thereby trading reduced data rate for increased range. For a bandwidth of 125 kHz, the PHY data rates range from 6835 to 365 b/s for SF7–SF12. The different SFs are orthogonal. This means that a LoRa gateway can receive multiple transmissions on different SFs simultaneously. Note that SF bits are mapped per LoRa symbol.
-
-increasing the spread factor makes the signal more robust to noise, but decreases the data rate.
+\subsection{Network server}
+\par LoRaWAN network server is server that provides MAC layer processing. Network server routes messages from application to end nodes, and vice versa. Network server can be used for tweaking end node parameters like channel, transmit power, SF to increase network performance.  
 
 
-\par Lowest SF suitable area section is relatively higher then the others. Most of the end devices which close to GW will fall into this area.
+\section{LoRa}
+\par LoRa is the name of the proprietary physical layer radio and chipset technology that provides wireless link solution for low power wide area networks. LoRa is designed and patented by Semtech Corporation. LoRa uses proprietary spread spectrum modulation technique that is derivative of Chirp Spread Spectrum (CSS). Chirp is a sinusoidal signal which its  frequency increases over time. The chirp frequency increases linearly and sweeps entire bandwidth. [CITE] We invite readers to refer to \cite{AN1200.22} for further details.
 
-\par End devices near the GW will probably select lowest SF all the time. Which results a lot of collisions between lowest SF transmissions while end device number near the GW increases. Figure~\ref{fig:collision}
+\subsection{Spreading Factor}
+\par Spreading factor (SF) is the ratio between symbol rate and chip rate. The ratio between symbol and chip rate is equal to $2$\textsuperscript{SF}. SF can take values between 7 to 12. [CITE] SF also determines data rate of a LoRa transmission.
+
+\begin{equation} \label{eq:bit_rate_sf}
+R_{b} = SF * \dfrac{\left[ \dfrac{4}{4+CR} \right] }{ \left[ \dfrac{2^{SF}}{BW} \right]} \ bits/sec
+\end{equation}
+
+Where SF is spreading factor $SF \in \{7,..,12\}$, CR is error correction code rate $CR \in \{1,..,4\}$ and BW is bandwidth in Hertz. [CITE:modulation basics]
+
+\par While BW and CR are constant, as the SF increases the data rate decreases. Increasing SF makes the signal more resilient to noise thus increases the transmission range. Increasing SF also increases transmission duration which increases power consumption. Therefore it is possible to trade between data rate, range and power consumption by  changing SF.
+
+\subsection{Spreading Factor Assignment Issue}
+\par Simultaneous different SF transmissions are orthogonal to each other up to some extent. Which means, a LoRa gateway can simultaneously receive multiple transmissions with different SFs. However, simultaneous transmissions with same SF may not be received by gateway due to collision. For this reason, spreading factor assignment of nodes is crucial for network performance.
+
+\par [TODO] Lowest SF suitable area section is relatively higher then the others. Most of the end devices which close to GW will fall into this area.
+
+\par [TODO] End devices which close to the GW will probably select lowest SF all the time. Which results a lot of collisions between lowest SF transmissions while end device number close to the GW increases. Figure~\ref{fig:collision}
 
 \begin{figure}
 \centering
 \includegraphics[width=0.5\textwidth]{collision}
-\caption{Collision between nodes near the GW.}
+\caption{Collision between nodes close to the GW.}
 \label{fig:collision}
 \end{figure}
 
 
 \section{Other Related Works} \label{Other Related Works}
-The literature related to the work presented in this paper has started growing recently. LPWAN technologies and especially LoRa/LoRaWAN attract researchers attention lately. We listed some of these works which studying  LoRaWAN and LoRa spreading factor.
+The literature related to the work presented in this paper has started growing recently. LPWAN technologies and especially LoRa/LoRaWAN attract researchers attention lately. We listed some of these works which studying LoRaWAN and LoRa SF.
 
 \par In \cite{7996384}, the authors evaluated the performance of LoRa networks in a smart city scenario. The
-authors proposed a link measurement and a link performance model for LoRa. The authors also proposed a SINR threshold matrix for modeling LoRa interference between simultaneous but different spreading factor LoRa transmissions. They implement a LoRa simulator in ns-3 to study scalability and performance of LoRaWAN networks. Their results show that LoRaWAN networks scale well as the number of nodes and gateways increases. They also show that spreading factor assignment has great effect on network performance.
+authors proposed a link measurement and a link performance model for LoRa. The authors also proposed a SINR threshold matrix for modeling LoRa interference between simultaneous but different SF LoRa transmissions. They implement a LoRa simulator in ns-3 to study scalability and performance of LoRaWAN networks. Their results show that LoRaWAN networks scale well as the number of nodes and gateways increases. They also show that SF assignment has great effect on network performance.
 
 \par In \cite{8090518}, another LoRaWAN ns-3 simulator is presented. Authors introduced an error model for determining range as well as interference between multiple simultaneous LoRa transmissions. Their simulator supports LoRaWAN class A end devices, multiple gateways, both upstream and downstream confirmed messages. Their results show that allocating network parameters to end devices is hugely important for the performance of LoRaWAN networks.
 
 \par In \cite{s17061193}, the authors investigated single gateway LoRaWAN network scalability in terms of the number of end nodes using a simulation model based on real measurements. They measure the impact of two concurrent LoRa transmissions on each other by using physical LoRaWAN end devices and a gateway then they created a simulation model from measurements. Their results show that LoRaWAN has better scalability than pure ALOHA since a LoRa packet may still go through under collision if the the last six symbols of preamble and header of the packet does not collide.
 
-\par In \cite{8267219}, the authors studied imperfect orthogonality between different LoRa spreading factor transmissions. The authors state that a LoRa transmission can be interfered even between different spreading factor transmissions when power of the interfering signal significantly overcomes the reference signal. Their experimental results show that this power difference is around 16 dB and this power difference can be seen when  interferer is close to receiver or multiple interferer can create this power difference cumulatively. 
+\par In \cite{8267219}, the authors studied imperfect orthogonality between different LoRa SF transmissions. The authors state that a LoRa transmission can be interfered even between different SF transmissions when power of the interfering signal significantly overcomes the reference signal. Their experimental results show that this power difference is around 16 dB and this power difference can be seen when  interferer is close to receiver or multiple interferer can create this power difference cumulatively. 
 
-\par In \cite{8430542}, the authors investigated the impact of interference caused by simultaneous LoRa transmissions using the same spreading factor as well as different spreading factors. They derived aggregated co-SF and inter-SF interference power SIR distributions to capture the coverage performance with respect to the distance from the gateway for modeling interference in multiple gateway scenarios. Their results show that transmission among different spreading factors can cause a significant impact in high-density LoRaWAN networks.
+\par In \cite{8430542}, the authors investigated the impact of interference caused by simultaneous LoRa transmissions using the same SF as well as different SFs. They derived aggregated co-SF and inter-SF interference power SIR distributions to capture the coverage performance with respect to the distance from the gateway for modeling interference in multiple gateway scenarios. Their results show that transmission among different SFs can cause a significant impact in high-density LoRaWAN networks.
 
 
 \section{Proposed Technique} \label{Proposed Technique}
+\par [TODO]
+
 \par If GW force some of close end nodes to select higher SF even if they can able to communicate with lower SF, this will result lower collisions due to the orthogonality of different SF. Figure~\ref{fig:collision_solution_single_gw}
 
 \par GW can avoid increasing SF of end nodes which is close to other GW using location information obtained by triangulating the signal strength of end nodes. Figure~\ref{fig:collision_solution_multi_gw}
@@ -123,54 +129,76 @@ authors proposed a link measurement and a link performance model for LoRa. The a
 \end{figure}
 
 
-\section{Simulation Environment and Results} \label{Simulation Environment and Results}
-A discrete event simulator is implemented in Python to simulate LoRa network performance. https://github.com/tugrulyatagan/simlorafs
+\section{Simulation Environment} \label{Simulation Environment}
+[TODO] A discrete event simulator is implemented in Python to simulate LoRa network performance. https://github.com/tugrulyatagan/simlorafs
 
-\subsection{Simulation Environment}
+\begin{table}
+\centering
+\caption{Gateway Sensitivity for different SFs}
+\label{table:gw_sf_sensitivity}
+\begin{tabular}{|c|c|c|c|c|c|c|c|}
+\hline
+            &         & \multicolumn{6}{c|}{\textbf{SF}}        \\ \cline{3-8} 
+            &         &    7 &    8 &    9 &   10 &   11 &   12 \\ \hline
+            & 125 kHz & -123 & -126 & -129 & -132 & -133 & -136 \\ 
+\textbf{BW} & 250 kHz & -120 & -123 & -125 & -128 & -130 & -133 \\
+            & 500 kHz & -116 & -119 & -122 & -125 & -128 & -130 \\
+\hline
+\end{tabular}
+\end{table}
+[CITE:datasheet]
 
-\subsubsection{Link Model}
-TODO
 
-\subsubsection{Interference Model}
-TODO
+\begin{equation} \label{eq:rx_sensitivity}
+P^{dBm}
+\end{equation}
+[CITE:modulation basics]
 
-\subsubsection{Simulation Assumptions}
-TODO
+
+\subsection{Link Model}
+[TODO]
+
+\subsection{Interference Model}
+[TODO]
+
+\subsection{Simulation Assumptions}
+[TODO]
 
 \begin{figure}
 \centering
 \includegraphics[width=0.5\textwidth]{sf_pdr}
-\caption{PDR of different spreading factors.}
-\label{fig:sf_1000}
+\caption{PDR of different SFs.}
+\label{fig:sf_pdr}
 \end{figure}
 
 \begin{figure}
 \centering
 \includegraphics[width=0.5\textwidth]{gw_pdr}
 \caption{PDR of different gateway numbers.}
-\label{fig:sf_3000}
+\label{fig:gw_pdr}
 \end{figure}
 
 \begin{figure}
 \centering
 \includegraphics[width=0.5\textwidth]{r_pdr}
 \caption{PDR of different topology radius.}
-\label{fig:sf_10000}
+\label{fig:r_pdr}
 \end{figure}
 
 \begin{figure}
 \centering
 \includegraphics[width=0.5\textwidth]{pr_pdr}
 \caption{PDR of different packet rates.}
-\label{fig:sf_10000}
+\label{fig:pr_pdr}
 \end{figure}
 
-\subsection{Simulation Results}
-TODO: Evaluation
+
+\section{Simulation Results} \label{Simulation Results}
+[TODO] Evaluation
 
 
 \section{Conclusion} \label{Conclusion}
-TODO: Summary, future works
+[TODO] Summary, future works
 \cite{7815384} \cite{7803607} \cite{7996384} \cite{8090518} \cite{s17061193} \cite{8267219} \cite{8430542} \cite{8319183} \cite{8480649} \cite{AN1200.22} \cite{Bor:2016:LLW:2988287.2989163} \cite{8406255} \cite{DBLP:journals/corr/abs-1802-10338} \cite{finnegan2018comparative}
 
 
@@ -180,6 +208,5 @@ This work is supported by Turkish Ministry of Development and Istanbul Technical
 
 \bibliographystyle{IEEEtran}
 \bibliography{references}
-
 
 \end{document}
