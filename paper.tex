@@ -135,20 +135,28 @@ authors proposed a link measurement and a link performance model for LoRa. The a
 \subsection{Link Model}
 \par [TODO] 
 
+The link budget of a wireless system or network is a measure of all the gains and losses from the transmitter, through the propagation channel, to the target receiver. Link budget of a wireless link can be calculated as:
 
-The link budget of a wireless system or network is a measure of all the gains and losses from the
-transmitter, through the propagation channel, to the target receiver. These gains and losses include
-system gains and losses associated with the antenna, matching networks, etc. as well as losses
-associated propagation channel itself (either though modelling or measured data).
-Typically randomly varying channel mechanisms such as multipath and Doppler fading are taken into
-account by factoring additional margin depending on the anticipated severity.
-The link budget of a network wireless link can be expressed as:
-
-\begin{equation} \label{eq:rx_sensitivity}
+\begin{equation} \label{eq:expected_rx_power}
 P^{dBm}_{RX} = P^{dBm}_{TX} + G^{dB}_{SYS} - L^{dB}_{SYS} - L^{dB}_{PATH}
 \end{equation}
 
-Where, $P^{dBm}_{RX}$ is the expected receive power at the receiver. $P^{dBm}_{TX}$ is the transmit power. $G^{dB}_{SYS}$ is the system gains such as transmitter and receiver antenna gain. $L^{dB}_{SYS}$ is the system losses such as transmitter and receiver line, circuit, antenna losses. $L^{dB}_{PATH}$ is the propagation path loss between transmitter and receiver antennas.
+\par Where, $P^{dBm}_{RX}$ is the expected receive power at the receiver. $P^{dBm}_{TX}$ is the transmit power. $G^{dB}_{SYS}$ is the system gains such as transmitter and receiver antenna gains. $L^{dB}_{SYS}$ is the system losses such as transmitter and receiver line, circuit, antenna losses. $L^{dB}_{PATH}$ is the propagation path loss between transmitter and receiver antennas.
+
+\par Propagation loss can be calculated as:
+
+\begin{equation} \label{eq:propagation_loss}
+\begin{split}
+P^{dB}_{PATH} = 40(1 - 4 \times 10^{-3} \times h){\log_{10} R|_{km}} \\
+- 18 {\log_{10} h|_{m}} + 21 {\log_{10} f|_{MHz}} + 80
+\end{split}
+\end{equation}
+
+\par Where $h$ is the gateway altitude and $f$ is the frequency of the signal. We assume that $h$ = 15 m and $f$ = 868 MHz, Propagation loss can be calculated as:
+
+\begin{equation} \label{eq:propagation_loss}
+P^{dB}_{PATH} = 120.5 + 37.6 {\log_{10} R|_{km}}
+\end{equation}
 
 \par Receive sensitivity of a LoRa gateway for different SFs and BWs can be found in Table \ref{table:gw_sf_sensitivity} \cite{SX1276}.
 
