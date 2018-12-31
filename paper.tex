@@ -201,6 +201,18 @@ T = \begin{bmatrix}
      \end{bmatrix}
 \end{equation}
 
+\begin{equation} \label{eq:sinr_db}
+SINR_{i,j} = \dfrac{P_{rc,0}}{\sum_{l \in I_j} P_{rc,l}}
+\end{equation}
+
+\begin{equation} \label{eq:sinr_t}
+SINR_{i,j}^{dB} > T_{i,j}
+\end{equation}
+
+\begin{equation} \label{eq:p_interference}
+P_{rc,y}^{interf} = \dfrac{P_{rc,y}(T_{x}-t_{1})}{T_{x}}
+\end{equation}
+
 \begin{figure}
 \centering
 \includegraphics[width=0.5\textwidth]{sf_pdr}
@@ -229,12 +241,19 @@ T = \begin{bmatrix}
 \label{fig:pr_pdr}
 \end{figure}
 
+\begin{figure}
+\centering
+\includegraphics[width=0.5\textwidth]{predict_pdr}
+\caption{PDR of different prediction SF assignment scheme.}
+\label{fig:pr_pdr}
+\end{figure}
+
 \subsection{Simulation Results}
 \par [TODO] Evaluation
 
 
 \section{Conclusion} \label{Conclusion}
-\par In this paper, after brief introduction about LPWAN technologies, we provide background information about one of the most promising LPWAN technology, LoRa. Then, we discuss about LoRa modulation basics and spreading factor assignment issue. We have implemented a discrete event simulator from scratch to study network performance of LoRaWAN and evaluate different SF assignment schemes. We have shown how same SF transmission collisions can be avoided and we proposed a machine learning based solution for collision with same SF transmissions. We illustrate simulation results for proposed machine learning SF assignment technique. Our simulation results show that, proposed technique can increase network performance up to [TODO] \%.
+\par In this paper, after brief introduction about LPWAN technologies, we provide background information about one of the most promising LPWAN technology, LoRa. Then, we discuss about LoRa modulation basics and spreading factor assignment issue. We have implemented a discrete event simulator from scratch to study network performance of LoRaWAN and evaluate different SF assignment schemes. We have shown how same SF transmission collisions can be avoided and we proposed a machine learning based solution for collision with same SF transmissions. We illustrate simulation results for proposed machine learning SF assignment technique. Our simulation results show that, proposed technique can increase network performance up to [TBD] \%.
 
 \par As for future works, transmit power optimization can be included to proposed machine learning scheme. In this paper, we assume nodes always uses maximum transmit power for uplink transmission, however nodes close to the GW can decrease transmit power to save energy. This will make transmission more vulnerable to interference thus requires extra care. Optimizing another node parameter alongside SF can be interesting research. Also other machine learning methods can be investigated for SF optimization. 
 Reinforcement learning can be a good candidate for this network optimization issue.
