@@ -39,7 +39,7 @@ LoRa, Spreading Factor, IoT, LPWAN, Machine Learning
 
 \par LoRa can adjust data rate by spreading symbols within a fixed channel bandwidth. This enables tradeoff between receive sensitivity and transmission air time. [CITE] LoRa supports 6 different SF option. Simultaneous same SF transmissions are prone to collision however different SF transmissions in same channel are orthogonal to each other, thus SF assignment is crucial for overall network performance. [CITE] In this work, we introduce a custom made LoRa discrete event simulator to study LoRa SF assignment issue. We also proposed an SF assignment scheme to increase network performance with the help of machine learning methods and we verified our proposal using our simulator.
 
-\par The following two sections provides an background information about LoRaWAN and LoRa. Section \ref{Other Related Works} describes other related works. Section \ref{Proposed Technique} describes proposed technique for SF assignment. Simulation environments and results are shown in Section \ref{Simulation Environment and Results}. Finally, Section \ref{Conclusion} concludes the paper.
+\par The following two sections provides an background information about LoRaWAN and LoRa. Section \ref{Other Related Works} describes other related works. Section \ref{Proposed Technique} describes proposed technique for SF assignment. Simulation environments and results are shown in Section \ref{Simulation Environment} and \ref{Simulation Results}. Finally, Section \ref{Conclusion} concludes the paper.
 
 
 \section{LoRaWAN} \label{LoRaWAN}
@@ -125,8 +125,8 @@ authors proposed a link measurement and a link performance model for LoRa. The a
 \end{figure}
 
 
-\section{Simulation Environment and Results} \label{Simulation Environment and Results}
-\par A discrete event simulator is implemented in Python to study LoRa network performance considering SF orthogonality. The LoRaWAN SF simulation tool is publicly available at https://github.com/tugrulyatagan/simlorafs. Simulation tool supports custom LoRaWAN topologies as well as randomly generated LoRaWAN topologies. Simulator can generate uniformly distributed random topology with number of nodes and number of gateways input. Global simulation parameters are simulation duration (s), packet size (B), packet generation rate (p/s) and spreading factor assignment method. With these input, the simulator provide outputs of total number of generated packets, number of successfully received packet, number of interfered packets, number of under sensitivity packets, network packet delivery ratio percentage (PDR), network throughput (bps) and total transmit energy consumption (J).
+\section{Simulation Environment} \label{Simulation Environment}
+\par A discrete event simulator is implemented in Python to study LoRa network performance considering SF orthogonality. The LoRaWAN SF simulation tool is publicly available at https://github.com/tugrulyatagan/simlorafs. Simulation tool supports custom LoRaWAN topologies as well as randomly generated LoRaWAN topologies. Simulator can generate uniformly distributed random circle shape network topology with radius, number of nodes and number of gateways inputs. Global simulation parameters are simulation duration (s), packet size (B), packet generation rate (p/s) and spreading factor assignment method. With these input, the simulator provide outputs of total number of generated packets, number of successfully received packet, number of interfered packets, number of under sensitivity packets, network packet delivery ratio percentage (PDR), network throughput (bps) and total transmit energy consumption (J).
 
 \par In our simulator we only cover LoRaWAN Class A devices. Transmissions are always initiated by end nodes in pure ALOHA manner. Nodes generate a new packet according to Poisson interval for given packet rate input. In our simulator, downlink transmissions are not considered. Downlink transmissions are very rare in real world deployments since ISM band regulations dictates duty cycle transmission limit for all devices including GW. This makes downlink transmissions to very rare.
 
@@ -230,14 +230,13 @@ t_{x}|_{s} = \dfrac{8 \times PS|_{B}}{R_{b}|_{bps}}
 \end{equation}
 
 \subsection{Machine Learning Model}
-\par We have been able to generate mass amount of LoRaWAN transmission data for different topologies using our  tool. To come up with a solution for SF assignment issue, we have integrated a machine learning scheme to our simulator. This will allow us train a model from generated transmission data and we use this trained model to select best possible SF for nodes using prediction of the model. Tool first run a simulation with assigning random SF to nodes. Simulation results are combined into four columns which are; X and Y coordinates of the transmission source, SF of the transmission and result of the transmission. Transmission result can be successful, interfered or under sensitivity. These data is fed to Python scikit-learn decision tree classifier. After the model is created, a second simulation is run with a predictor. First, SF of nodes are assigned according to lowest possible scheme. Then, for every nodes if predictors predicts a interference
+\par We have been able to generate mass amount of LoRaWAN transmission data for different topologies using our  tool. To come up with a solution for SF assignment issue, we have integrated a machine learning scheme to our simulator. This will allow us train a model from generated transmission data and we use this trained model to select best possible SF for nodes using prediction of the model. Tool first run a simulation with assigning random SF to nodes. Simulation results are combined into four columns which are; X and Y coordinates of the transmission source, SF of the transmission and result of the transmission. Transmission result can be successful, interfered or under sensitivity. These data is fed to Python scikit-learn decision tree classifier. After the model is created, a second simulation is run with a predictor. Model tries to find the lowest possible SF with prediction of successful transmission. 
 
 
+\section{Simulation Results}  \label{Simulation Results}
+\par For simulation results in this paper, we set global simulation parameters as follows. Packet size is 60 bytes including header and payload. Simulation duration is 3600 seconds.
 
-For machine learning model, we utilized at least three GWs for a LoRaWAN network knowing the fact that three GWs is sufficient for triangulation in real world deployments.
-
-\subsection{Simulation Results}
-\par For simulation results in this paper, we set global simulation parameters as follows. Packet size is 60 Bytes including header and payload. Simulation duration is 3600 seconds. 
+\par In Figure \ref{fig:sf_pdr}, PDR plot of different SF assignment is shown. Randomly generated network topology radius is set to 3000 meters, number of GW is set to 1 and packet generation rate is set to 0.01 packet per second. Increasing SFs, increases time on air. This increases the number of collisions thus decreases the PDR of the network. PDR of higher SFs are decreased to almost 0 while number of node is increasing. Since network topology radius is quite small almost all SFs can reach to the GW.
 
 \begin{figure}
 \centering
@@ -246,12 +245,16 @@ For machine learning model, we utilized at least three GWs for a LoRaWAN network
 \label{fig:sf_pdr}
 \end{figure}
 
+\par In Figure \ref{fig:gw_pdr}, PDR plot of different number of GW is shown. Randomly generated topology radius is set to 3000 meters, packet generation rate is set to 0.01 packet per second and lowest possible SF assignment scheme is used. Increasing number of GWs, decreases the SFs of nodes and decreases time on air. This decreases number of collisions thus increases the PDR of the network when network topology radius is constant.
+
 \begin{figure}
 \centering
 \includegraphics[width=\linewidth]{{gw_pdr_r3000_p0.01_s3600}.png}
 \caption{PDR of different number of gateways.}
 \label{fig:gw_pdr}
 \end{figure}
+
+\par In Figure \ref{fig:r_pdr}, PDR plot of different network topology radius is shown. Number of GW is set to 1, packet generation rate is set to 0.01 packet per second and lowest possible SF assignment scheme is used. Increasing network topology radius, increases the number of under sensitivity transmissions thus decreases the PDR of the network.
 
 \begin{figure}
 \centering
@@ -260,12 +263,16 @@ For machine learning model, we utilized at least three GWs for a LoRaWAN network
 \label{fig:r_pdr}
 \end{figure}
 
+\par In Figure \ref{fig:pr_pdr}, PDR plot of different packet generation rate is shown. Randomly generated topology radius is set to 3000 meters, number of GW is set to 1 and lowest possible SF assignment scheme is used. Increasing packet generation rate, increases the number of collisions thus decreases the PDR of the network.
+
 \begin{figure}
 \centering
 \includegraphics[width=\linewidth]{{pr_pdr_r3000_g1_s3600}.png}
 \caption{PDR of different packet rates.}
 \label{fig:pr_pdr}
 \end{figure}
+
+\par In Figure \ref{fig:predict_pdr}, PDR plot of machine learning predictor SF scheme is shown. Randomly generated network topology radius is set to 5000 meters, number of GW is set to 3 and packet generation rate is set to 0.01 packet per second. Our predictor model needs nodes location so we simulate predictor SF scheme with at three GWs since three GWs is enough to roughly locate nodes positions by triangulation. Predictor scheme gives better PDR when number of nodes increases since number of interference increases when number of nodes increases. Predictor scheme can improve performance when LoRa interference is present. Also predictor scheme gives better results when nodes are deployed close to the gateway, since nodes have a margin to increase their SFs. If a node is far away from the GW, then predictor scheme cannot increase the SF to avoid interference since the SF is already high.
 
 \begin{figure}
 \centering
