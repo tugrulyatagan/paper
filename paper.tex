@@ -128,6 +128,8 @@ authors proposed a link measurement and a link performance model for LoRa. The a
 \section{Simulation Environment and Results} \label{Simulation Environment and Results}
 \par A discrete event simulator is implemented in Python to study LoRa network performance considering SF orthogonality. The LoRaWAN SF simulation tool is publicly available at https://github.com/tugrulyatagan/simlorafs. Simulation tool supports custom LoRaWAN topologies as well as randomly generated LoRaWAN topologies. Simulator can generate uniformly distributed random topology with number of nodes and number of gateways input. Global simulation parameters are simulation duration (s), packet size (B), packet generation rate (p/s) and spreading factor assignment method. With these input, the simulator provide outputs of total number of generated packets, number of successfully received packet, number of interfered packets, number of under sensitivity packets, network packet delivery ratio percentage (PDR), network throughput (bps) and total transmit energy consumption (J).
 
+\par In our simulator we only cover LoRaWAN Class A devices. Transmissions are always initiated by end nodes in pure ALOHA manner. Nodes generate a new packet according to Poisson interval for given packet rate input. In our simulator, downlink transmissions are not considered. Downlink transmissions are very rare in real world deployments since ISM band regulations dictates duty cycle transmission limit for all devices including GW. This makes downlink transmissions to very rare.
+
 \subsection{Link Model}
 \par Link quality of a wireless system can be expressed by the metric of link budget. Link budget is a measure of all gains and losses from transmitter to receiver. Link budget of a wireless link can be calculated as \cite{AN1200.22}:
 
@@ -203,33 +205,39 @@ T = \begin{bmatrix}
      \end{bmatrix}
 \end{equation}
 
-\par To calculate if a referenced signal is interfered at receiver by a interferer signal, we use SINR threshold matrix. $T_{i,j}$ is the needed SINR margin in dB between referenced signal with SF = i and interferer signal with SF = j to correctly decode referenced signal. If there are more than one interferer, referenced signal must satisfy the margin for cumulative sum of all received power values for each SF \cite{7996384}.
+\par To decide if a referenced signal is interfered at receiver by a interferer signal, we use SINR threshold matrix. $T_{i,j}$ is the needed SINR margin in dB between referenced signal with SF = i and interferer signal with SF = j to correctly decode the referenced signal. If there are more than one interferer, referenced signal must satisfy the margin for cumulative sum of all interfering signal received power values for each SF \cite{7996384}.
 
 \begin{equation} \label{eq:sinr_db}
 SINR_{i,j} = \dfrac{P_{rc,0}}{\sum_{l \in I_j} P_{rc,l}}
 \end{equation}
 
-\par 
+\par Where $P_{rc,0}$ is received signal power of referenced signal and $P_{rc,l}$ is received signal power of interfering signal at SF = j. If a packet with SF = i satisfies the following condition for every SF = j, then packet is survived from all interference.
 
 \begin{equation} \label{eq:sinr_t}
 SINR_{i,j}^{dB} > T_{i,j}
 \end{equation}
 
-\par Transmission duration of a packet can be calculated by data rate $R_{b}$ and packet size $PS$. Data rate of a LoRa transmission is already expressed in Equation \ref{eq:bit_rate_sf}. Duration of a LoRa transmission:
-
-\begin{equation} \label{eq:transmission_duration}
-t_{x}|_{s} = \dfrac{8 \times PS|_{B}}{R_{b}|_{bps}}
-\end{equation}
-
-\par TODOOOOOOOOO
+\par To calculate interfering power at receiver, we should consider the case where two transmissions are not perfectly overlapping. To equalize the interfering power value \cite{7996384}:
 
 \begin{equation} \label{eq:p_interference}
 P_{rc,y}^{interf} = \dfrac{P_{rc,y}(t_{interf})}{t_{x}}
 \end{equation}
 
+\par Where $t_{x}$ is transmission duration of referenced signal. $t_{interf}$ is intersection duration between referenced signal and interfering signal. Transmission duration of a packet can be calculated by data rate $R_{b}$ and packet size $PS$. Data rate of a LoRa transmission is already expressed in Equation \ref{eq:bit_rate_sf}. Duration of a LoRa transmission:
+
+\begin{equation} \label{eq:transmission_duration}
+t_{x}|_{s} = \dfrac{8 \times PS|_{B}}{R_{b}|_{bps}}
+\end{equation}
+
+\subsection{Machine Learning Model}
+\par We have been able to generate mass amount of LoRaWAN transmission data for different topologies using our  tool. To come up with a solution for SF assignment issue, we have integrated a machine learning scheme to our simulator. This will allow us train a model from generated transmission data and we use this trained model to select best possible SF for nodes using prediction of the model. Tool first run a simulation with assigning random SF to nodes. Simulation results are combined into four columns which are; X and Y coordinates of the transmission source, SF of the transmission and result of the transmission. Transmission result can be successful, interfered or under sensitivity. These data is fed to Python scikit-learn decision tree classifier. After the model is created, a second simulation is run with a predictor. First, SF of nodes are assigned according to lowest possible scheme. Then, for every nodes if predictors predicts a interference
+
+
+
+For machine learning model, we utilized at least three GWs for a LoRaWAN network knowing the fact that three GWs is sufficient for triangulation in real world deployments.
+
 \subsection{Simulation Results}
-\par We have been able to evaluate different 
-For simulation results in this paper, we set packet size as 60 Bytes including header and payload.
+\par For simulation results in this paper, we set global simulation parameters as follows. Packet size is 60 Bytes including header and payload. Simulation duration is 3600 seconds. 
 
 \begin{figure}
 \centering
