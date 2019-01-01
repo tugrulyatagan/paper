@@ -78,7 +78,7 @@ Where, SF is spreading factor $SF \in \{7,..,12\}$, CR is error correction code 
 
 \par Initially, a node is not aware of how far it is from a GW. However, a node can guess how far away from the gateway by observing received signal power of a downlink transmission. If a downlink transmission received signal power is too high then node can decrease its next transmission SF or transmit power to decrease power consumption. Also GW can request from a node to decrease node's SF or transmit power. This SF assignment method is called lowest possible SF assignment scheme for the rest of the paper.
 
-\par In Figure \ref{fig:collision}, a LoRaWAN network distributed around a single GW is illustrated. Different color rings represent achievable range of different SF from GW and different color circles represent nodes with selected SF. Most of the end devices which close to the GW will fall into lowest SF (SF7) area section. End devices which close to the GW will probably select lowest SF all the time. Which results a lot of collisions between same SF transmissions. Collision number increases while end device number close to the GW increases.
+\par In Figure \ref{fig:collision}, a LoRaWAN network distributed around a single GW is illustrated. Different color rings represent achievable range of different SF from GW and different color circles represent nodes with selected SF. Most of the end devices which close to the GW will fall into lowest SF (SF7) area section. End devices which close to the GW will probably select lowest SF all the time. Which results a lot of collisions between same SF transmissions. Collision number increases while number of end devices close to the GW increases.
 
 \begin{figure}
 \centering
@@ -126,7 +126,7 @@ authors proposed a link measurement and a link performance model for LoRa. The a
 
 
 \section{Simulation Environment and Results} \label{Simulation Environment and Results}
-\par A discrete event simulator is implemented in Python to study LoRa network performance considering SF orthogonality. The LoRaWAN SF simulation tool is publicly available at https://github.com/tugrulyatagan/simlorafs. Simulation tool supports custom LoRaWAN topologies as well as randomly generated LoRaWAN topologies. Simulator can generate uniformly distributed random topology with node number and gateway number input. Global simulation parameters are simulation duration (s), packet size (B), packet generation rate (p/s) and spreading factor assignment method. With these input, tool provide outputs of total generated packet number, successfully received packet number, interfered packet number, under sensitivity packet number, network packet delivery ratio (PDR), network throughput and total transmit energy consumption.
+\par A discrete event simulator is implemented in Python to study LoRa network performance considering SF orthogonality. The LoRaWAN SF simulation tool is publicly available at https://github.com/tugrulyatagan/simlorafs. Simulation tool supports custom LoRaWAN topologies as well as randomly generated LoRaWAN topologies. Simulator can generate uniformly distributed random topology with number of nodes and number of gateways input. Global simulation parameters are simulation duration (s), packet size (B), packet generation rate (p/s) and spreading factor assignment method. With these input, the simulator provide outputs of total number of generated packets, number of successfully received packet, number of interfered packets, number of under sensitivity packets, network packet delivery ratio percentage (PDR), network throughput (bps) and total transmit energy consumption (J).
 
 \subsection{Link Model}
 \par Link quality of a wireless system can be expressed by the metric of link budget. Link budget is a measure of all gains and losses from transmitter to receiver. Link budget of a wireless link can be calculated as \cite{AN1200.22}:
@@ -135,7 +135,7 @@ authors proposed a link measurement and a link performance model for LoRa. The a
 P^{dBm}_{RX} = P^{dBm}_{TX} + G^{dB}_{SYS} - L^{dB}_{SYS} - L^{dB}_{PATH}
 \end{equation}
 
-\par Where, $P^{dBm}_{RX}$ is the expected receive power at the receiver. $P^{dBm}_{TX}$ is the transmit power of the transmitter. $G^{dB}_{SYS}$ is the system gains such as transmitter and receiver antenna gains. $L^{dB}_{SYS}$ is the system losses such as transmitter and receiver line, circuit, antenna losses. $L^{dB}_{PATH}$ is the propagation path loss between transmitter and receiver antennas in open space. In our simulation we assume that total of system gains $G^{dB}_{SYS}$ and system losses $L^{dB}_{SYS}$ is +7 dBm.
+\par Where, $P^{dBm}_{RX}$ is the expected receive power at the receiver. $P^{dBm}_{TX}$ is the transmit power of the transmitter. $G^{dB}_{SYS}$ is the system gains such as transmitter and receiver antenna gains. $L^{dB}_{SYS}$ is the system losses such as transmitter and receiver line, circuit, antenna losses. $L^{dB}_{PATH}$ is the propagation path loss between transmitter and receiver antennas in open space. In our simulation we assume that total of system gains $G^{dB}_{SYS}$ and system losses $L^{dB}_{SYS}$ is +7 dB.
 
 \begin{table}
 \centering
@@ -188,7 +188,9 @@ P^{dB}_{PATH} = 120.5 + 37.6 {\log_{10} R|_{km}}
 \par If the received signal power is higher than the gateway sensitivity, then signal can be decoded by the receiver successfully when there is no interfering transmission at the transmission period.
 
 \subsection{Interference Model}
-\par We invite readers to refer to \cite{7996384}
+\par We have adopted the interference model described in \cite{7996384} to our simulator. They introduced SINR threshold matrix for modeling LoRa interference between simultaneous but different SF LoRa transmissions.
+
+\par We assume that there is no other technology interference is present in the network except LoRa interference. To exploit imperfect orthogonality of different SF transmission, we need to calculate the effect of different SF transmissions to each other. We used signal to interference plus noise ratio (SINR) threshold matrix \cite{goursaud:hal-01231221}:
 
 \begin{equation} \label{eq:sinr}
 T = \begin{bmatrix}
@@ -201,9 +203,13 @@ T = \begin{bmatrix}
      \end{bmatrix}
 \end{equation}
 
+\par To calculate if a referenced signal is interfered at receiver by a interferer signal, we use SINR threshold matrix. $T_{i,j}$ is the needed SINR margin in dB between referenced signal with SF = i and interferer signal with SF = j to correctly decode referenced signal. If there are more than one interferer, referenced signal must satisfy the margin for cumulative sum of all received power values for each SF \cite{7996384}.
+
 \begin{equation} \label{eq:sinr_db}
 SINR_{i,j} = \dfrac{P_{rc,0}}{\sum_{l \in I_j} P_{rc,l}}
 \end{equation}
+
+\par 
 
 \begin{equation} \label{eq:sinr_t}
 SINR_{i,j}^{dB} > T_{i,j}
@@ -215,47 +221,50 @@ SINR_{i,j}^{dB} > T_{i,j}
 t_{x}|_{s} = \dfrac{8 \times PS|_{B}}{R_{b}|_{bps}}
 \end{equation}
 
+\par TODOOOOOOOOO
+
 \begin{equation} \label{eq:p_interference}
 P_{rc,y}^{interf} = \dfrac{P_{rc,y}(t_{interf})}{t_{x}}
 \end{equation}
 
+\subsection{Simulation Results}
+\par We have been able to evaluate different 
+For simulation results in this paper, we set packet size as 60 Bytes including header and payload.
+
 \begin{figure}
 \centering
-\includegraphics[width=\linewidth]{sf_pdr_r3000_g1_p001_s3600}
+\includegraphics[width=\linewidth]{{sf_pdr_r3000_g1_p0.01_s3600}.png}
 \caption{PDR of different SFs.}
 \label{fig:sf_pdr}
 \end{figure}
 
 \begin{figure}
 \centering
-\includegraphics[width=\linewidth]{gw_pdr_r3000_p001_s3600}
-\caption{PDR of different gateway numbers.}
+\includegraphics[width=\linewidth]{{gw_pdr_r3000_p0.01_s3600}.png}
+\caption{PDR of different number of gateways.}
 \label{fig:gw_pdr}
 \end{figure}
 
 \begin{figure}
 \centering
-\includegraphics[width=\linewidth]{r_pdr_g1_p001_s3600}
+\includegraphics[width=\linewidth]{{r_pdr_g1_p0.01_s3600}.png}
 \caption{PDR of different topology radius.}
 \label{fig:r_pdr}
 \end{figure}
 
 \begin{figure}
 \centering
-\includegraphics[width=\linewidth]{pr_pdr_r3000_g1_s3600}
+\includegraphics[width=\linewidth]{{pr_pdr_r3000_g1_s3600}.png}
 \caption{PDR of different packet rates.}
 \label{fig:pr_pdr}
 \end{figure}
 
 \begin{figure}
 \centering
-\includegraphics[width=\linewidth]{predict_pdr_r5000_g3_p001_s3600}
+\includegraphics[width=\linewidth]{{predict_pdr_r5000_g3_p0.01_s3600}.png}
 \caption{PDR of different prediction SF assignment scheme.}
 \label{fig:predict_pdr}
 \end{figure}
-
-\subsection{Simulation Results}
-\par [TODO] Evaluation
 
 
 \section{Conclusion} \label{Conclusion}
