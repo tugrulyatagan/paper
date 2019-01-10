@@ -271,13 +271,13 @@ t_{x} = \dfrac{8 \times PS|_{B}}{R_{b}|_{bps}}  \ s
 \label{fig:pr_pdr}
 \end{figure}
 
-\par In Figure \ref{fig:predict_pdr}, PDR plot of machine learning prediction scheme is shown. Randomly generated network topology radius is set to 5000 meters, number of GW is set to 3 and packet generation rate is set to 0.01 packet per second. Prediction model needs nodes location so three GWs are used for prediction SF scheme since three GWs are enough to roughly locate nodes positions by triangulation. Prediction scheme gives better PDR when number of nodes increases since number of interferences also increases. Prediction scheme can only improve network performance when LoRa interference is present. Also, prediction scheme gives better results when nodes are deployed close to the gateway, since nodes have margin to increase their SFs. If a node is far away from the GW, then prediction scheme cannot increase the SF to avoid interference since the SF is already high.
+\par In Figure \ref{fig:prediction_pdr}, PDR plot of machine learning prediction scheme is shown. Randomly generated network topology radius is set to 5000 meters, number of GW is set to 3 and packet generation rate is set to 0.01 packet per second. Prediction model needs nodes location so three GWs are used for prediction SF scheme since three GWs are enough to roughly locate nodes positions by triangulation. Prediction scheme gives better PDR when number of nodes increases since number of interferences also increases. Prediction scheme can only improve network performance when LoRa interference is present. Also, prediction scheme gives better results when nodes are deployed close to the gateway, since nodes have margin to increase their SFs. If a node is far away from the GW, then prediction scheme cannot increase the SF to avoid interference since the SF is already high.
 
 \begin{figure}
 \centering
-\includegraphics[width=\linewidth]{{predict_pdr_r5000_g3_p0.01_s3600}.png}
+\includegraphics[width=\linewidth]{{prediction_pdr_r5000_g3_p0.01_s3600}.png}
 \caption{PDR of SF prediction scheme.}
-\label{fig:predict_pdr}
+\label{fig:prediction_pdr}
 \end{figure}
 
 
