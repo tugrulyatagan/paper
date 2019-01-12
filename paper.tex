@@ -280,6 +280,38 @@ t_{x} = \dfrac{8 \times PS|_{B}}{R_{b}|_{bps}}  \ s
 \label{fig:prediction_pdr}
 \end{figure}
 
+\begin{table}
+\centering
+\caption{PDR of TODO}
+\label{table:prediction_pdr}
+\begin{tabular}{|c|c|c|l|c|c|l|c|c|l|c|}
+\hline
+\multicolumn{2}{|c|}{\multirow{3}{*}{}}      & \multicolumn{9}{c|}{\textbf{Number of Nodes}}                                   \\ \cline{3-11} 
+\multicolumn{2}{|c|}{}                       & \multicolumn{3}{c|}{100} & \multicolumn{3}{c|}{500} & \multicolumn{3}{c|}{1000} \\ \cline{3-11} 
+\multicolumn{2}{|c|}{}                       & L      & S      & D      & L      & S      & D      & L       & S      & D      \\ \hline
+\multirow{4}{*}{\textbf{Radius (m)}} & 3000  & 00     & 00     & 00     & 00     & 00     & 00     & 00      & 00     & 00     \\ \cline{2-11} 
+                                     & 5000  & 00     & 00     & 00     & 00     & 00     & 00     & 00      & 00     & 00     \\ \cline{2-11} 
+                                     & 7000  & 00     & 00     & 00     & 00     & 00     & 00     & 00      & 00     & 00     \\ \cline{2-11} 
+                                     & 10000 & 00     & 00     & 00     & 00     & 00     & 00     & 00      & 00     & 00     \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table}
+\centering
+\caption{Prediction accuracy of TODO}
+\label{table:prediction_accuracy}
+\begin{tabular}{|c|c|c|c|c|c|c|c|}
+\hline
+\multicolumn{2}{|c|}{\multirow{3}{*}{}}      & \multicolumn{6}{c|}{\textbf{Number of Nodes}}                                   \\ \cline{3-8} 
+\multicolumn{2}{|c|}{}                       & \multicolumn{2}{c|}{100} & \multicolumn{2}{c|}{500} & \multicolumn{2}{c|}{1000} \\ \cline{3-8} 
+\multicolumn{2}{|c|}{}                       & S           & D          & S           & D          & S           & D           \\ \hline
+\multirow{4}{*}{\textbf{Radius (m)}} & 3000  & 00          & 00         & 00          & 00         & 00          & 00          \\ \cline{2-8} 
+                                     & 5000  & 00          & 00         & 00          & 00         & 00          & 00          \\ \cline{2-8} 
+                                     & 7000  & 00          & 00         & 00          & 00         & 00          & 00          \\ \cline{2-8} 
+                                     & 10000 & 00          & 00         & 00          & 00         & 00          & 00          \\ \hline
+\end{tabular}
+\end{table}
+
 
 \section{Conclusion} \label{Conclusion}
 \par In this paper, after a brief introduction about LPWAN technologies, we provide background information about one of the most promising LPWAN technology, LoRa. Then, we discuss about LoRa modulation basics and spreading factor assignment issue. We have implemented a discrete event simulator from scratch to study network performance of LoRaWAN and evaluate different SF assignment schemes. We have shown how same SF transmission collisions can be avoided and we proposed a machine learning based solution for collision with same SF transmissions. We illustrate simulation results for proposed machine learning SF assignment technique. Our simulation results show that, proposed technique can increase network performance for LoRaWAN networks when nodes are deployed close to the GWs.
