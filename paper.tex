@@ -28,7 +28,7 @@ Low power wide area network (LPWAN) technologies offer affordable connectivity t
 
 
 \begin{IEEEkeywords}
-LoRa, Spreading Factor, IoT, LPWAN, Machine Learning
+LoRa, LoRaWAN, Spreading Factor, LPWAN, Machine Learning
 \end{IEEEkeywords}
 
 
@@ -183,9 +183,9 @@ P^{dBm}_{RX} = P^{dBm}_{TX} + G^{dB}_{SYS} - L^{dB}_{SYS} - L^{dB}_{PATH}
 \label{fig:r_pdr}
 \end{figure}
 
-\par For space constraints, we omit figures for network throughput output, total transmit energy consumption output and different packet generation rate input. We invite readers to experiment the simulation tool with different simulation inputs and outputs. \cite{simlorasf}.
+\par For space constraints, we omit figures for network throughput output, total transmit energy consumption output and different packet generation rate input. We invite readers to experiment the simulation tool with different inputs and outputs. \cite{simlorasf}.
 
-\par In Figure \ref{fig:prediction_pdr}, PDR plot of machine learning prediction scheme is shown. Randomly generated network topology radius is set to 5000 meters and number of GW is set to 3. Prediction model needs nodes location so three GWs are used for prediction SF scheme since three GWs are enough to roughly locate nodes positions by triangulation. Prediction scheme gives better PDR when number of nodes increases since number of interferences also increases. Prediction scheme can only improve network performance when LoRa interference is present. Also, prediction scheme gives better results when nodes are deployed close to the gateway, since nodes have margin to increase their SFs. If a node is far away from the GW, then prediction scheme cannot increase the SF to avoid interference since the SF is already high.
+\par In Figure \ref{fig:prediction_pdr}, PDR plot of machine learning prediction scheme is shown. Randomly generated network topology radius is set to 5000 meters and number of GW is set to 3. Prediction model needs nodes location so three GWs are used for prediction SF scheme since three GWs are enough to roughly locate nodes positions by triangulation. Prediction scheme gives better PDR when number of nodes increases since number of interferences also increases. Prediction scheme can only improve network performance when LoRa interference is present. Also, prediction scheme gives better results when nodes are deployed close to the gateway, since nodes have margin to increase their SFs. If a node is far away from the GW, then prediction scheme cannot increase the SF to avoid interference since the SF is already high. \ref{table:prediction_pdr} TODO
 
 \begin{figure}
 \centering
@@ -193,10 +193,6 @@ P^{dBm}_{RX} = P^{dBm}_{TX} + G^{dB}_{SYS} - L^{dB}_{SYS} - L^{dB}_{PATH}
 \caption{PDR of SF prediction scheme.}
 \label{fig:prediction_pdr}
 \end{figure}
-
-\par In Table \ref{table:prediction_pdr}, TODO
-
-\par In Table \ref{table:prediction_accuracy}, TODO
 
 \begin{table}
 \centering
@@ -223,6 +219,8 @@ P^{dBm}_{RX} = P^{dBm}_{TX} + G^{dB}_{SYS} - L^{dB}_{SYS} - L^{dB}_{PATH}
                                  &                        & DTC    & 98.3          & 90.6          & 81.9          \\ \hline
 \end{tabular}
 \end{table}
+
+\par In Table \ref{table:prediction_accuracy}, prediction accuracy of SVM and DTC prediction schemes are shown for different network topology radius and number of nodes. Number of GW is set to 3. TODO
 
 \begin{table}
 \centering
