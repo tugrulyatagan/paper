@@ -39,24 +39,7 @@ LoRa, Spreading Factor, IoT, LPWAN, Machine Learning
 
 \par LoRa can adjust data rate by spreading symbols within a fixed channel bandwidth. This enables tradeoff between receive sensitivity and transmission time on air \cite{7803607}. LoRa supports 6 different SF option. Simultaneous same SF transmissions are prone to collision, however, different SF transmissions in the same channel are orthogonal to each other up to some extent, thus SF assignment is crucial for overall network performance. In this work, a custom made LoRa discrete event simulator is introduced to study different LoRa SF assignment strategies. We also proposed an SF assignment scheme to increase network performance with the help of machine learning methods and we verified our proposal using the simulator.
 
-\par The following two sections provides a background information about LoRaWAN and LoRa. Section \ref{Other Related Works} describes other related works. Section \ref{Proposed Technique} describes proposed technique for SF assignment. Simulation environments and results are shown in Section \ref{Simulation Environment} and \ref{Simulation Results}. Finally, Section \ref{Conclusion} concludes the paper.
-
-
-\section{LoRaWAN} \label{LoRaWAN}
-\par LoRa is a wireless link technology for LPWAN applications. LoRa has an open standard MAC protocol called LoRaWAN. LoRa and LoRaWAN terms are frequently yet incorrectly used for each other.
-
-\par LoRaWAN is a medium access control (MAC) layer protocol which designed for large scale LoRa networks. LoRaWAN is an open source standard developed and it is maintained by LoRa Alliance. LoRa Alliance is an open, non-profit organization dedicated to standardization of LoRaWAN. LoRa can be used as a wireless link technology without complying LoRaWAN, however LoRaWAN is developed considering well known LPWAN challenges and their best practice solutions. LoRaWAN also provides inter-operability between different LoRa networks. LoRaWAN provides lightweight but powerful standard for wide range of LoRa IoT applications.  LoRaWAN is based on pure ALOHA medium access which means end nodes do not check whether the channel is free or not before transmitting, accepting the possibility of the collision.
-
-\par A typical LoRaWAN network consist of three network entities.
-
-\subsection{End node}
-\par LoRaWAN end node (EN) is a low power embedded device that only communicates to gateways. LoRaWAN standard defines three classes for end devices which are Class A, Class B, and Class C. Different classes provides LPWAN solutions to different deployments and topologies. Class A end nodes generate uplink transmission at any time and only receives a period of time after uplink transmission. Class B end nodes extend Class A behavior by adding scheduled receive windows for downlink transmission. Receive window is synchronized using a beacon packet transmitted by gateways. Class C end nodes extend Class A behavior by keeping receive window open all the time except uplink transmission. This provides Class C end nodes to low latency downlink communication, but it requires more power consumption. In this paper, we focused on Class A end devices since Class A behavior provides the lowest power consumption.
-
-\subsection{Gateway}
-\par LoRaWAN gateway (GW) is a device that receive/transmit packets coming from/to end nodes. A typical gateway can receive from multiple channels at the same time. Gateways are typically connected to power grid, so power consumption of a gateway is insignificant in most of the deployments.
-
-\subsection{Network server}
-\par LoRaWAN network server (NS) is a server that provides MAC layer processing. Network server routes messages from application to end nodes and vice versa. Network server can be used for tweaking end node parameters like channel, transmit power and SF to increase network performance.
+\par The following two sections provides a background information about LoRa and LoRaWAN. Section \ref{Other Related Works} describes other related works. Section \ref{Proposed Technique} describes proposed technique for SF assignment. Simulation environments and results are shown in Section \ref{Simulation Environment} and \ref{Simulation Results}. Finally, Section \ref{Conclusion} concludes the paper.
 
 
 \section{LoRa}
@@ -88,6 +71,23 @@ Where, $R_{b}$ is data rate in bps, SF is spreading factor $SF \in \{7,..,12\}$,
 \end{figure}
 
 
+\section{LoRaWAN} \label{LoRaWAN}
+\par LoRa is a wireless link technology for LPWAN applications. LoRa has an open standard MAC protocol called LoRaWAN. LoRa and LoRaWAN terms are frequently yet incorrectly used for each other.
+
+\par LoRaWAN is a medium access control (MAC) layer protocol which designed for large scale LoRa networks. LoRaWAN is an open source standard developed and it is maintained by LoRa Alliance. LoRa Alliance is an open, non-profit organization dedicated to standardization of LoRaWAN. LoRa can be used as a wireless link technology without complying LoRaWAN, however LoRaWAN is developed considering well known LPWAN challenges and their best practice solutions. LoRaWAN also provides inter-operability between different LoRa networks. LoRaWAN provides lightweight but powerful standard for wide range of LoRa IoT applications.  LoRaWAN is based on pure ALOHA medium access which means end nodes do not check whether the channel is free or not before transmitting, accepting the possibility of the collision.
+
+\par A typical LoRaWAN network consist of three network entities.
+
+\subsection{End node}
+\par LoRaWAN end node (EN) is a low power embedded device that only communicates to gateways. LoRaWAN standard defines three classes for end devices which are Class A, Class B, and Class C. Different classes provides LPWAN solutions to different deployments and topologies. Class A end nodes generate uplink transmission at any time and only receives a period of time after uplink transmission. Class B end nodes extend Class A behavior by adding scheduled receive windows for downlink transmission. Receive window is synchronized using a beacon packet transmitted by gateways. Class C end nodes extend Class A behavior by keeping receive window open all the time except uplink transmission. This provides Class C end nodes to low latency downlink communication, but it requires more power consumption. In this paper, we focused on Class A end devices since Class A behavior provides the lowest power consumption.
+
+\subsection{Gateway}
+\par LoRaWAN gateway (GW) is a device that receive/transmit packets coming from/to end nodes. A typical gateway can receive from multiple channels at the same time. Gateways are typically connected to power grid, so power consumption of a gateway is insignificant in most of the deployments.
+
+\subsection{Network server}
+\par LoRaWAN network server (NS) is a server that provides MAC layer processing. Network server routes messages from application to end nodes and vice versa. Network server can be used for tweaking end node parameters like channel, transmit power and SF to increase network performance.
+
+
 \section{Other Related Works} \label{Other Related Works}
 \par The literature related to the work presented in this paper has started growing recently. LPWAN technologies and especially LoRa attracted researchers’ attentions lately. We listed some of these works which studies LoRaWAN and LoRa SF.
 
@@ -108,6 +108,9 @@ Where, $R_{b}$ is data rate in bps, SF is spreading factor $SF \in \{7,..,12\}$,
 \par It is difficult to propose a single SF assignment rule for every possible LoRaWAN topology since every network is different and optimizing their nodes SFs requires different rules. For this reason, we proposed a machine learning based SF assignment scheme to decrease same SF transmission collisions. This technique learns behavior of the nodes in a network. A NS can keep track of successful uplink transmissions and their SFs. NS can also keep track of some of the collided transmission if header part of the packet is not interfered at location of the GW. However, NS cannot keep track of transmissions with receive power lower than the GW sensitivity. Using these obtained information, NS can train a classifier for predicting future transmission result for specific node and specific SF. Using this prediction model NS can assign the lowest possible SF to nodes considering the collision probability.
 
 \par In this work, a decision tree classifier is used to predict transmission results. Gini index criteria is used for measuring quality of decision tree splits. As in most of the machine learning applications, increasing the data set size increases the prediction accuracy. For in this case, data set size is directly proportional to simulation duration. Thus, increasing simulation duration, increases the prediction accuracy. For real world cases, NS can keep track of transmission and it can create a classifier daily basis, then GWs can request from nodes to use this new SF.
+
+\par We have been able to generate mass amount of LoRaWAN transmission logs for different topologies using the simulator. To come up with a solution for SF assignment issue, a machine learning prediction scheme is integrated to the simulator. A classifier is trained from transmission logs and this classifier is used for selecting best possible SF for the nodes. Simulator first runs a simulation with assigning random SF to nodes. Simulation results are combined into four data columns which are; X and Y coordinates of the transmission source, SF of the transmission and result of the transmission. Transmission result can be successful, interfered or under sensitivity. These data are fed to Python scikit-learn decision tree classifier. After the classifier model is generated, a second simulation is run with classifier. Simulator selects the lowest possible SF considering prediction of transmission. If a transmission of a node with lowest possible SF is predicted as interfered transmission by classifier, then simulator assigns a higher SF. If no SF is predicted as successful, then simulator again assigns lowest possible SF.
+
 
 \begin{figure}
 \centering
@@ -228,9 +231,6 @@ P_{rc,y}^{interf} = \dfrac{P_{rc,y}(t_{interf})}{t_{x}}
 t_{x} = \dfrac{8 \times PS|_{B}}{R_{b}|_{bps}}  \ s
 \end{equation}
 
-\subsection{Machine Learning Model}
-\par We have been able to generate mass amount of LoRaWAN transmission logs for different topologies using the simulator. To come up with a solution for SF assignment issue, a machine learning prediction scheme is integrated to the simulator. A classifier is trained from transmission logs and this classifier is used for selecting best possible SF for the nodes. Simulator first runs a simulation with assigning random SF to nodes. Simulation results are combined into four data columns which are; X and Y coordinates of the transmission source, SF of the transmission and result of the transmission. Transmission result can be successful, interfered or under sensitivity. These data are fed to Python scikit-learn decision tree classifier. After the classifier model is generated, a second simulation is run with classifier. Simulator selects the lowest possible SF considering prediction of transmission. If a transmission of a node with lowest possible SF is predicted as interfered transmission by classifier, then simulator assigns a higher SF. If no SF is predicted as successful, then simulator again assigns lowest possible SF.
-
 
 \section{Simulation Results}  \label{Simulation Results}
 \par For simulation results in this paper, global simulation parameters are set as follows. Packet size is 60 bytes including header and payload. Simulation duration is 3600 seconds.
@@ -282,41 +282,56 @@ t_{x} = \dfrac{8 \times PS|_{B}}{R_{b}|_{bps}}  \ s
 
 \begin{table}
 \centering
-\caption{PDR of TODO}
+\caption{PDR of lowest SF selection and different SF classifier schemes.}
 \label{table:prediction_pdr}
-\begin{tabular}{|c|c|c|l|c|c|l|c|c|l|c|}
+\begin{tabular}{|c|c|c|c|c|c|}
 \hline
-\multicolumn{2}{|c|}{\multirow{3}{*}{}}      & \multicolumn{9}{c|}{\textbf{Number of Nodes}}                                   \\ \cline{3-11} 
-\multicolumn{2}{|c|}{}                       & \multicolumn{3}{c|}{100} & \multicolumn{3}{c|}{500} & \multicolumn{3}{c|}{1000} \\ \cline{3-11} 
-\multicolumn{2}{|c|}{}                       & L      & S      & D      & L      & S      & D      & L       & S      & D      \\ \hline
-\multirow{4}{*}{\textbf{Radius (m)}} & 3000  & 00     & 00     & 00     & 00     & 00     & 00     & 00      & 00     & 00     \\ \cline{2-11} 
-                                     & 5000  & 00     & 00     & 00     & 00     & 00     & 00     & 00      & 00     & 00     \\ \cline{2-11} 
-                                     & 7000  & 00     & 00     & 00     & 00     & 00     & 00     & 00      & 00     & 00     \\ \cline{2-11} 
-                                     & 10000 & 00     & 00     & 00     & 00     & 00     & 00     & 00      & 00     & 00     \\ \hline
+\multicolumn{3}{|c|}{\multirow{2}{*}{}}                            & \multicolumn{3}{c|}{\textbf{Number of Nodes}} \\ \cline{4-6}
+\multicolumn{3}{|c|}{}                                             & 100           & 500           & 1000          \\ \hline
+\multirow{12}{*}{\textbf{R (m)}} & \multirow{3}{*}{3000}  & Lowest & 97.8          & 86.0          & 72.3          \\ \cline{3-6}
+                                 &                        & SVM    & 98.0          & 88.2          & 75.2          \\ \cline{3-6}
+                                 &                        & DTC    & 97.8          & 89.8          & 78.7          \\ \cline{2-6}
+
+                                 & \multirow{3}{*}{5000}  & Lowest & 96.8          & 85.5          & 71.2          \\ \cline{3-6}
+                                 &                        & SVM    & 98.0          & 87.8          & 74.8          \\ \cline{3-6}
+                                 &                        & DTC    & 97.7          & 90.2          & 79.8          \\ \cline{2-6}
+
+                                 & \multirow{3}{*}{7000}  & Lowest & 97.2          & 87.5          & 76.8          \\ \cline{3-6}
+                                 &                        & SVM    & 98.2          & 88.8          & 78.6          \\ \cline{3-6}
+                                 &                        & DTC    & 97.8          & 90.7          & 81.6          \\ \cline{2-6}
+
+                                 & \multirow{3}{*}{10000} & Lowest & 98.2          & 90.3          & 81.5          \\ \cline{3-6}
+                                 &                        & SVM    & 98.3          & 90.3          & 81.9          \\ \cline{3-6}
+                                 &                        & DTC    & 98.3          & 90.6          & 81.9          \\ \hline
 \end{tabular}
 \end{table}
 
 \begin{table}
 \centering
-\caption{Prediction accuracy of TODO}
+\caption{Prediction accuracy (\%) of different classifiers.}
 \label{table:prediction_accuracy}
-\begin{tabular}{|c|c|c|c|c|c|c|c|}
+\begin{tabular}{|c|c|c|c|c|c|}
 \hline
-\multicolumn{2}{|c|}{\multirow{3}{*}{}}      & \multicolumn{6}{c|}{\textbf{Number of Nodes}}                                   \\ \cline{3-8} 
-\multicolumn{2}{|c|}{}                       & \multicolumn{2}{c|}{100} & \multicolumn{2}{c|}{500} & \multicolumn{2}{c|}{1000} \\ \cline{3-8} 
-\multicolumn{2}{|c|}{}                       & S           & D          & S           & D          & S           & D           \\ \hline
-\multirow{4}{*}{\textbf{Radius (m)}} & 3000  & 00          & 00         & 00          & 00         & 00          & 00          \\ \cline{2-8} 
-                                     & 5000  & 00          & 00         & 00          & 00         & 00          & 00          \\ \cline{2-8} 
-                                     & 7000  & 00          & 00         & 00          & 00         & 00          & 00          \\ \cline{2-8} 
-                                     & 10000 & 00          & 00         & 00          & 00         & 00          & 00          \\ \hline
+\multicolumn{3}{|c|}{\multirow{2}{*}{}}                        & \multicolumn{3}{c|}{\textbf{Number of Nodes}} \\ \cline{4-6}
+\multicolumn{3}{|c|}{}                                         & 100           & 500           & 1000          \\ \hline
+\multirow{8}{*}{\textbf{R (m)}} & \multirow{2}{*}{3000}  & SVM & 82.4          & 70.4          & 71.7          \\ \cline{3-6}
+                                &                        & DTC & 86.0          & 67.3          & 70.4          \\ \cline{2-6}
+
+                                & \multirow{2}{*}{5000}  & SVM & 79.5          & 69.0          & 71.1          \\ \cline{3-6}
+                                &                        & DTC & 84.5          & 67.3          & 69.5          \\ \cline{2-6}
+
+                                & \multirow{2}{*}{7000}  & SVM & 79.5          & 70.6          & 71.2          \\ \cline{3-6}
+                                &                        & DTC & 84.5          & 67.7          & 69.2          \\ \cline{2-6}
+
+                                & \multirow{2}{*}{10000} & SVM & 79.2          & 74.4          & 76.1          \\ \cline{3-6}
+                                &                        & DTC & 83.8          & 70.7          & 74.3          \\ \hline
 \end{tabular}
 \end{table}
-
 
 \section{Conclusion} \label{Conclusion}
 \par In this paper, after a brief introduction about LPWAN technologies, we provide background information about one of the most promising LPWAN technology, LoRa. Then, we discuss about LoRa modulation basics and spreading factor assignment issue. We have implemented a discrete event simulator from scratch to study network performance of LoRaWAN and evaluate different SF assignment schemes. We have shown how same SF transmission collisions can be avoided and we proposed a machine learning based solution for collision with same SF transmissions. We illustrate simulation results for proposed machine learning SF assignment technique. Our simulation results show that, proposed technique can increase network performance for LoRaWAN networks when nodes are deployed close to the GWs.
 
-\par As for future works, transmit power optimization can be included to proposed machine learning scheme. In this paper, we assume that nodes always use maximum transmit power for uplink transmission, however nodes close to the GW can decrease transmit power to save energy. This will make transmissions to more vulnerable to interference thus requires extra care. Optimizing another node parameter alongside SF can be interesting research. Also, other machine learning methods can be investigated for SF optimization. Reinforcement learning is a good candidate for this network optimization issue.
+\par As for future works, transmit power optimization can be included to proposed machine learning scheme. In this paper, we assume that nodes always use maximum transmit power for uplink transmission, however nodes close to the GW can decrease transmit power to save energy. This will make transmissions to more vulnerable to interference thus requires extra care. Also, other machine learning methods can be investigated for SF optimization. Reinforcement learning is a good candidate for this network optimization issue. TODO, node id without location TODO
 
 
 \section*{Acknowledgment}
