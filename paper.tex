@@ -103,11 +103,11 @@ Where, $R_{b}$ is data rate in bps, SF is spreading factor $SF \in \{7,..,12\}$,
 
 \par It is difficult to propose a single SF assignment rule for every possible LoRaWAN topology since every network is different and optimizing their nodes' SFs requires different rules. For this reason, we proposed a machine learning based SF assignment scheme to decrease same SF transmission collisions. This technique works by learning the behavior of the nodes in a network. A NS can keep track of successful uplink transmissions and their SFs. NS can also keep track of some of the collided transmission if header part of the packet is not interfered at location of the GW. However, NS cannot keep track of transmissions with receive power lower than the GW sensitivity. Using these obtained information, NS can train a classifier for predicting future transmission result for specific node and specific SF. Using this prediction model NS can assign the SF to nodes considering the collision probability.
 
-\par In this work, decision tree classifier (DTC) and support vector machine (SVM) are evaluated to predict transmission results. Gini index criteria is used for DTC splits. Class weights are balanced according to sample distributions for both methods. Data set size is directly proportional to simulation duration. Thus, increasing simulation duration, improves the prediction accuracy. For real world cases, NS can keep track of transmission and it can create a classifier daily basis, then GWs can request from nodes to use their new SFs.
+\par In this work, decision tree classifier (DTC) and support vector machine (SVM) classifier are evaluated to predict transmission results. Class weights are balanced according to sample distributions for both methods. For DTC, Gini impurity criteria is used to measure the quality of a splits. For SVM, penalty parameter is set to 1, degree is set to 3 and RBF kernel is used.
 
-\par We have been able to generate mass amount of LoRaWAN transmission logs for different topologies using the simulator. To come up with a solution for SF assignment issue, DTC and SCM prediction schemes are integrated to the simulator. A classifier is trained from transmission logs and this classifier is used for selecting best possible SF for the nodes. Simulator first runs a simulation with assigning random SF to the nodes. Simulation results are combined into four data columns which are; X and Y coordinates of the transmission source, SF of the transmission and result of the transmission. Transmission result can be successful, interfered or under sensitivity. These data are fed to Python scikit-learn DTC or SVM classifiers. After the classifier model is generated, a second simulation is run with classifier. Simulator selects the most suitable SF considering prediction of transmission. If a transmission of a node with lowest possible SF is predicted as interfered by the classifier, then simulator assigns a higher SF. If no SF is predicted as successful, then simulator again assigns the lowest possible SF.
+\par We have been able to generate mass amount of LoRaWAN transmission logs for different topologies using the simulator. Data set size is directly proportional to simulation duration. Thus, increasing simulation duration, improves the prediction accuracy. In real world deployments, NS can keep track of transmission and it can create a classifier daily basis, then GWs can request from nodes to use their new SFs.
 
-TODOOOOO
+\par To come up with a solution for SF assignment issue, DTC and SCM prediction schemes are integrated to the simulator. A classifier is trained from transmission logs and this classifier is used for selecting optimum SF for the nodes. Simulator first runs a simulation with assigning random SF to the nodes. Simulation results are combined into four data columns which are; X and Y coordinates of the transmission source, SF of the transmission and result of the transmission. Possible transmission results are successful, interfered or under sensitivity. These data are fed to Python scikit-learn DTC or SVM classifiers. After the classifier model is generated, a second simulation is run with classifier. Simulator selects optimum SF considering prediction of transmission. If a transmission of a node with lowest possible SF is predicted as interfered by the classifier, then simulator assigns higher SF and calculates new prediction. If no SF is predicted as successful, then simulator again assigns the lowest possible SF.
 
 \begin{figure}
 \centering
@@ -125,7 +125,7 @@ TODOOOOO
 
 
 \section{Simulation Environment} \label{Simulation Environment}
-\par A discrete event simulator is implemented in Python to study effects of different SF strategies in LoRaWANs. The LoRaWAN SF simulation tool source code is available at \cite{simlorasf}. Simulation tool supports custom LoRaWAN topologies as well as randomly generated LoRaWAN topologies. Simulator can generate uniformly distributed circular shape network topology with radius (m), number of nodes and number of gateways input parameters. Global simulation input parameters are simulation duration (s), packet size (B), packet generation rate (p/s) and spreading factor assignment method. With these inputs, the simulator provides outputs of total number of generated packets, number of successfully received packets, number of interfered packets, number of under sensitivity packets, network packet delivery ratio percentage (PDR), network throughput (bps) and total transmit energy consumption (J).
+\par A discrete event simulator is implemented in Python to study effects of different SF strategies in LoRaWANs. The LoRaWAN SF simulation tool source code is available at \cite{simlorasf}. Simulation tool supports custom LoRaWAN topologies as well as randomly generated LoRaWAN topologies. Simulator can generate uniformly distributed circular shape network topology with radius (m), number of nodes and number of gateways input parameters. Global simulation input parameters are simulation duration (s), packet size (B), packet generation rate (p/s) and spreading factor assignment method. With these inputs, the simulator produces total number of generated packets, number of successfully received packets, number of interfered packets, number of under sensitivity packets, network packet delivery ratio percentage (PDR), network throughput (bps) and total transmit energy consumption (J). Simulator also produces  prediction accuracy and confusion matrix for machine learning schemes.
 
 \par In the simulator, only LoRaWAN Class A devices are covered. Transmissions are always initiated by end nodes in pure ALOHA manner. Nodes generate a new packet according to Poisson interval for given packet rate input parameter. In the simulator, downlink transmissions are not considered. Downlink transmissions are rare in real world deployments since ISM band regulations dictates duty cycle limit for all devices including GWs.
 
@@ -156,7 +156,7 @@ P^{dBm}_{RX} = P^{dBm}_{TX} + G^{dB}_{SYS} - L^{dB}_{SYS} - L^{dB}_{PATH}
 \section{Simulation Results}  \label{Simulation Results}
 \par For simulation results in this paper, global simulation parameters are set as follows. Packet size is 60 bytes including header and payload, simulation duration is 3600 seconds, packet generation rate is 0.01 packet per second.
 
-\par In Figure \ref{fig:sf_pdr}, PDR plot of different SF assignment is shown. Randomly generated network topology radius is set to 3000 meters and number of GW is set to 1. Increasing SFs increases time on air. This increases the number of collisions thus decreases the PDR of the network. PDR of higher SFs are decreased to almost 0 while number of nodes is increasing. Since network topology radius is quite small almost all SFs can reach to the GW.
+\par In Figure \ref{fig:sf_pdr}, PDR plot of different SF assignment is shown. Randomly generated network topology radius is set to 3000 meters and number of GWs is set to 1. Increasing SFs increases time on air. This increases the number of collisions thus decreases the PDR of the network. PDR of higher SFs are decreased to almost 0 while number of nodes is increasing. Since network topology radius is quite small almost all SFs can reach to the GW.
 
 \begin{figure}
 \centering
@@ -165,7 +165,7 @@ P^{dBm}_{RX} = P^{dBm}_{TX} + G^{dB}_{SYS} - L^{dB}_{SYS} - L^{dB}_{PATH}
 \label{fig:sf_pdr}
 \end{figure}
 
-\par In Figure \ref{fig:gw_pdr}, PDR plot of different number of GW is shown. Randomly generated topology radius is set to 3000 meters and lowest possible SF assignment scheme is used. Increasing number of GWs, decreases the SFs of nodes and decreases time on air. This decreases number of collisions thus increases the PDR of the network when network topology radius is constant.
+\par In Figure \ref{fig:gw_pdr}, PDR plot of different number of GWs is shown. Randomly generated topology radius is set to 3000 meters and lowest possible SF assignment scheme is used. Increasing number of GWs, decreases the SFs of nodes and decreases time on air. This decreases number of collisions thus increases the PDR of the network when network topology radius is constant.
 
 \begin{figure}
 \centering
@@ -185,7 +185,10 @@ P^{dBm}_{RX} = P^{dBm}_{TX} + G^{dB}_{SYS} - L^{dB}_{SYS} - L^{dB}_{PATH}
 
 \par For space constraints, we omit figures for network throughput output, total transmit energy consumption output and different packet generation rate input. We invite readers to experiment the simulation tool with different inputs and outputs. \cite{simlorasf}.
 
-\par In Figure \ref{fig:prediction_pdr}, PDR plot of machine learning prediction scheme is shown. Randomly generated network topology radius is set to 5000 meters and number of GW is set to 3. Prediction model needs nodes location so three GWs are used for prediction SF scheme since three GWs are enough to roughly locate nodes positions by triangulation. Prediction scheme gives better PDR when number of nodes increases since number of interferences also increases. Prediction scheme can only improve network performance when LoRa interference is present. Also, prediction scheme gives better results when nodes are deployed close to the gateway, since nodes have margin to increase their SFs. If a node is far away from the GW, then prediction scheme cannot increase the SF to avoid interference since the SF is already high. \ref{table:prediction_pdr} TODO
+\par In Figure \ref{fig:prediction_pdr}, result of proposed technique is presented. PDR plot of lowest SF scheme and machine learning prediction schemes are shown in same figure. Randomly generated network topology radius is set to 5000 meters and number of GWs is set to 3. Prediction model needs nodes location and three GWs are enough to roughly locate nodes positions by triangulation. In Table \ref{table:prediction_pdr}, PDR values for different topology radius are presented. Both prediction SF schemes give better PDR than lowest SF schemes when number of nodes increases since number of interference also increases. Prediction schemes can only improve network performance when LoRa interference is present. Also, prediction schemes give better results when nodes are deployed close to the gateway, since nodes have margin to increase their SFs. If a node is far away from the GW, then prediction schemes cannot increase the SF to avoid interference since the SF is already high. 
+
+In Table \ref{table:prediction_accuracy}, prediction accuracy of SVM and DTC prediction schemes are presented for different network topology radius and number of nodes. Number of GW is set to 3.
+
 
 \begin{figure}
 \centering
@@ -220,11 +223,9 @@ P^{dBm}_{RX} = P^{dBm}_{TX} + G^{dB}_{SYS} - L^{dB}_{SYS} - L^{dB}_{PATH}
 \end{tabular}
 \end{table}
 
-\par In Table \ref{table:prediction_accuracy}, prediction accuracy of SVM and DTC prediction schemes are shown for different network topology radius and number of nodes. Number of GW is set to 3. TODO
-
 \begin{table}
 \centering
-\caption{Prediction accuracy (\%) of SVM and DTC classifiers.}
+\caption{Prediction accuracy of SVM and DTC classifiers.}
 \label{table:prediction_accuracy}
 \begin{tabular}{|c|c|c|c|c|c|}
 \hline
@@ -243,6 +244,7 @@ P^{dBm}_{RX} = P^{dBm}_{TX} + G^{dB}_{SYS} - L^{dB}_{SYS} - L^{dB}_{PATH}
                                 &                        & DTC & 83.8          & 70.7          & 74.3          \\ \hline
 \end{tabular}
 \end{table}
+
 
 \section{Conclusion} \label{Conclusion}
 \par In this paper, after a brief introduction about LPWAN technologies, we provide background information about one of the most promising LPWAN technology, LoRa. Then, we discuss about LoRa modulation basics and spreading factor assignment issue. We have implemented a discrete event simulator from scratch to study network performance of LoRaWAN and evaluate different SF assignment schemes. We have shown how same SF transmission collisions can be avoided and we proposed a machine learning based solution for collision with same SF transmissions. We illustrate simulation results for proposed machine learning SF assignment technique. Our simulation results show that, proposed technique can increase network performance for LoRaWAN networks when nodes are deployed close to the GWs.
