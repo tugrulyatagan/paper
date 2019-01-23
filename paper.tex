@@ -91,9 +91,10 @@ Where, $R_{b}$ is data rate in bps, SF is spreading factor $SF \in \{7,..,12\}$,
 
 \par In \cite{8090518}, another LoRaWAN ns-3 simulator is presented. Authors introduced an error model for determining range as well as interference between multiple simultaneous LoRa transmissions. Their simulator supports LoRaWAN Class A end devices, multiple GWs, both upstream and downstream confirmed messages. Their results show that allocating network parameters such as SF is highly important for the performance of LoRaWAN networks.
 
-\par In \cite{8267219}, the authors studied the effects of imperfect orthogonality between different LoRa SF transmissions. The authors state that a LoRa transmission can be interfered by a different SF transmission when power of the interfering signal is significantly greater than the reference signal. Their experimental results show that this power difference is around 16 dB. Such a power difference can be seen when an interfering signal is close to a receiver or the sum of interfering signals' energy can create this power difference.
+\par In \cite{8267219} and \cite{8430542}, the authors studied the effects of imperfect orthogonality between different LoRa SF transmissions. The authors state that a LoRa transmission can be interfered by a different SF transmission when power of the interfering signal is significantly greater than the reference signal. Their results show that transmission among different SFs can cause a significant impact in high-density LoRaWAN networks.
 
-\par In \cite{8430542}, the authors investigated the impact of the interference caused by simultaneous LoRa transmissions with the same and different SFs. They derived aggregated co-SF and inter-SF interference power SIR distributions to capture the coverage distance from the GW for modeling interference in multiple GWs scenarios. Their results show that transmission among different SFs can cause a significant impact in high-density LoRaWAN networks.
+\par In \cite{8115779}, the authors introduced two new algorithms for SF assignment in LoRaWANs.
+First algorithm assigns SFs based on the total number of connected devices, second algorithm assigns SFs by balancing air time of the packets in each SF. Their simulation results show that their proposed algorithms give promising results.
 
 
 \section{Proposed Technique} \label{Proposed Technique}
