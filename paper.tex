@@ -37,7 +37,7 @@ LoRa, LoRaWAN, Spreading Factor, LPWAN, Machine Learning
 
 There are several emerging LPWAN technologies. LoRa, Sigfox, NB-IoT and LTE-M are commonly used, well-known LPWAN technologies \cite{7815384}. LoRa and Sigfox use license free ISM frequency bands while NB-IoT and LTE-M use licensed frequency bands which brings extra cost \cite{7815384}. Both LoRa and Sigfox are known for ultra-low power consumption and resilience to interference. While NB-IoT and LTE-M are promoted for higher data rate. LoRa has open standard MAC protocol called LoRaWAN. LoRaWAN and Sigfox MAC protocols are based on pure ALOHA medium access. LoRaWAN networks can be deployed as a private network like WiFi. However, Sigfox and NB-IoT are only available with operator contract \cite{7815384}.
 
-LoRa can adjust data rate by spreading symbols within a fixed channel bandwidth. This enables tradeoff between receive sensitivity and air time of transmission \cite{7803607}. Simultaneous same SF transmissions are prone to collision, however, different SF transmissions in the same channel are orthogonal to each other. Thus, SF assignment is crucial for overall network performance. In this work, a LoRa discrete event simulator is developed to study the performance of LoRa SF assignment strategies. Also, a machine learning based SF assignment approach is proposed. Support Vector Machine (SVM) and Decision Tree Classifier (DTC) techniques are employed and the introduced schemes are called as smart SF schemes. The performance of the smart schemes is compared with the performance of the lowest SF assignment scheme. It is shown that the proposed smart SF assignment schemes give promising results.
+LoRa can adjust data rate by spreading symbols within a fixed channel bandwidth. This enables tradeoff between receive sensitivity and air time of transmission \cite{7803607}. Simultaneous same SF transmissions are prone to collision, however, different SF transmissions in the same channel are orthogonal to each other. Thus, SF assignment is crucial for overall network performance. In this work, a LoRa discrete event simulator is developed to study the performance of LoRa SF assignment strategies. Also, a machine learning based SF assignment approach is proposed. Support Vector Machine (SVM) and Decision Tree Classifier (DTC) techniques are employed and the introduced schemes are called as smart SF schemes. The performance of the smart schemes are compared with the performance of the lowest SF assignment scheme. It is shown that the proposed smart SF assignment schemes give promising results.
 
 This paper is organized as follows: Section \ref{LoRa} and Section \ref{LoRaWAN} provides some background information about LoRa and LoRaWAN. Section \ref{Related Works} summarize  the other related works. Section \ref{Proposed Technique} describes the smart SF assignment technique proposed. Simulation environments and results are shown in Section \ref{Simulation Environment} and \ref{Simulation Results}. Finally, Section \ref{Conclusion} concludes the paper by giving future directions.
 
@@ -65,7 +65,7 @@ In Figure \ref{fig:collision}, a LoRaWAN network deployed with a single gateway 
 
 \begin{figure}
 \centering
-\includegraphics[width=\linewidth]{collision}
+\includegraphics[width=0.85\linewidth]{collision}
 \caption{Collision between nodes close to the gateway.}
 \label{fig:collision}
 \end{figure}
@@ -114,7 +114,7 @@ The tool first runs a simulation with random SF scheme. After random SF scheme s
 
 \begin{figure}
 \centering
-\includegraphics[width=\linewidth]{collision_solution_single_gw}
+\includegraphics[width=0.85\linewidth]{collision_solution_single_gw}
 \caption{Collision avoidance by using higher SF for nodes close to the gateway.}
 \label{fig:collision_solution_single_gw}
 \end{figure}
