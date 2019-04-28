@@ -65,7 +65,7 @@ In Figure \ref{fig:collision}, a LoRaWAN network deployed with a single gateway 
 
 \begin{figure}
 \centering
-\includegraphics[width=0.85\linewidth]{collision}
+\includegraphics[width=0.85\linewidth]{collision.png}
 \caption{Collision between nodes close to the gateway.}
 \label{fig:collision}
 \end{figure}
@@ -93,10 +93,9 @@ In \cite{8090518}, another LoRaWAN ns-3 simulator is presented. Authors introduc
 
 In \cite{8267219}, the authors studied the effects of imperfect orthogonality between different LoRa SF transmissions. The authors state that a LoRa transmission can be interfered by a different SF transmission when power of the interfering signal is significantly greater than the reference signal. Their experimental results show that this power difference is around 16 dB. Such a power difference can be seen when an interfering signal is close to a receiver or the sum of interfering signals' energy can create this power difference.
 
-In \cite{8430542}, the authors investigated the impact of the interference caused by simultaneous LoRa transmissions with the same and different SFs. They derived aggregated co-SF and inter-SF interference power SIR distributions to capture the coverage distance from the gateway for modeling interference in multiple gateways scenarios. Their results show that transmission among different SFs can cause a significant impact in high-density LoRaWAN networks.
+\par In \cite{8267219} and \cite{8430542}, the authors studied the effects of imperfect orthogonality between different LoRa SF transmissions. The authors state that a LoRa transmission can be interfered by a different SF transmission when power of the interfering signal is significantly greater than the reference signal. Their results show that transmission among different SFs can cause a significant impact in high-density LoRaWAN networks.
 
-In \cite{8115779}, the authors introduced two new algorithms for SF assignment in LoRaWANs.
-First algorithm assigns SFs based on the total number of connected devices, second algorithm assigns SFs by balancing air time of the packets in each SF. Based on the simulation results, it is shown that the proposed algorithms give promising results.
+The adaptive data rate (ADR) algorithm recommended by Semtech Corporation utilizes signal to noise ratio (SNR) of the last 20 transmissions to minimize the transmit power and SF while ensuring successful transmissions \cite{lorawan_adr}. The recommended algorithm uses a predefined SF and corresponding required SNR table. The algorithm considers maximum SNR of the last 20 transmissions. The algorithm increases transmit power or decrease data rate in case of low SNR and the opposite in case of high SNR.
 
 
 \section{Proposed Technique} \label{Proposed Technique}
@@ -114,14 +113,14 @@ The tool first runs a simulation with random SF scheme. After random SF scheme s
 
 \begin{figure}
 \centering
-\includegraphics[width=0.85\linewidth]{collision_solution_single_gw}
+\includegraphics[width=0.85\linewidth]{collision_solution_single_gw.png}
 \caption{Collision avoidance by using higher SF for nodes close to the gateway.}
 \label{fig:collision_solution_single_gw}
 \end{figure}
 
 \begin{figure}
 \centering
-\includegraphics[width=\linewidth]{collision_solution_multi_gw}
+\includegraphics[width=\linewidth]{collision_solution_multi_gw.png}
 \caption{Collision avoidance for intersecting gateways.}
 \label{fig:collision_solution_multi_gw}
 \end{figure}
@@ -317,7 +316,7 @@ For space constraints, we omit simulation results like network throughput, total
 \section{Conclusion} \label{Conclusion}
 In this paper, after a brief introduction about LPWAN technologies, LoRa modulation basics and spreading factor assignment issue is discussed. We present an open source discrete event simulator which is developed from scratch to study network performance of LoRaWAN and evaluate different SF assignment schemes. Moreover, we show how same SF collisions can be avoided, hence, we propose a machine learning based solutions called smart DTC scheme and smart SVM scheme. We present simulation results for the lowest SF assignment scheme and the proposed schemes. Simulation results show that, the proposed smart schemes can increase network performance for LoRaWAN networks, especially, when the nodes are deployed close to gateways.
 
-As for future work, transmit power optimization can be included to the proposed smart schemes. In this paper, it is assumed that nodes always use maximum transmit power for uplink transmission, however nodes close to gateways can decrease transmit power to save energy. This will make transmissions more vulnerable to interference thus requires extra care. Moreover, other machine learning methods can be investigated for SF assignment enhancement. Reinforcement learning could be a good candidate. Also, other transmission parameters such as node id and transmission time can be included to the proposed scheme to the improve prediction performance.
+As for future work, transmit power optimization can be included to the proposed smart scheme. In this paper, it is assumed that nodes always use maximum transmit power for uplink transmission, however nodes close to gateways can decrease transmit power to save energy. This will make transmissions more vulnerable to interference thus requires extra care. Moreover, other machine learning methods can be investigated for SF assignment enhancement. Reinforcement learning could be a good candidate. Also, other transmission parameters such as node id and transmission time can be included to the proposed scheme in order to improve prediction performance.
 
 
 \section*{Acknowledgment}
