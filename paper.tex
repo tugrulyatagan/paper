@@ -65,7 +65,7 @@ In Figure \ref{fig:collision}, a LoRaWAN network deployed with a single gateway 
 
 \begin{figure}
 \centering
-\includegraphics[width=0.85\linewidth]{collision.png}
+\includegraphics[width=0.83\linewidth]{collision.png}
 \caption{Collision between nodes close to the gateway.}
 \label{fig:collision}
 \end{figure}
@@ -95,7 +95,7 @@ In \cite{8267219}, the authors studied the effects of imperfect orthogonality be
 
 \par In \cite{8267219} and \cite{8430542}, the authors studied the effects of imperfect orthogonality between different LoRa SF transmissions. The authors state that a LoRa transmission can be interfered by a different SF transmission when power of the interfering signal is significantly greater than the reference signal. Their results show that transmission among different SFs can cause a significant impact in high-density LoRaWAN networks.
 
-The adaptive data rate (ADR) algorithm recommended by Semtech Corporation utilizes signal to noise ratio (SNR) of the last 20 transmissions to minimize the transmit power and SF while ensuring successful transmissions \cite{lorawan_adr}. The recommended algorithm uses a predefined SF and corresponding required SNR table. The algorithm considers maximum SNR of the last 20 transmissions. The algorithm increases transmit power or decrease data rate in case of low SNR and the opposite in case of high SNR.
+The adaptive data rate (ADR) algorithm recommended by Semtech Corporation utilizes signal to noise ratio (SNR) of the last 20 transmissions to minimize the transmit power and SF while ensuring successful transmissions \cite{lorawan_adr}. The recommended algorithm uses a predefined SF and corresponding required SNR table. The algorithm increases transmit power or decrease data rate in case of low SNR and the opposite in case of high SNR.
 
 
 \section{Proposed Technique} \label{Proposed Technique}
@@ -113,7 +113,7 @@ The tool first runs a simulation with random SF scheme. After random SF scheme s
 
 \begin{figure}
 \centering
-\includegraphics[width=0.85\linewidth]{collision_solution_single_gw.png}
+\includegraphics[width=0.83\linewidth]{collision_solution_single_gw.png}
 \caption{Collision avoidance by using higher SF for nodes close to the gateway.}
 \label{fig:collision_solution_single_gw}
 \end{figure}
@@ -140,20 +140,7 @@ P^{dBm}_{RX} = P^{dBm}_{TX} + G^{dB}_{SYS} - L^{dB}_{SYS} - L^{dB}_{PATH}
 
 Where, $P^{dBm}_{RX}$ is the expected receive power at the receiver. $P^{dBm}_{TX}$ is the transmit power of the transmitter. $G^{dB}_{SYS}$ is the system gains such as transmitter and receiver antenna gains. $L^{dB}_{SYS}$ is the system losses such as transmitter and receiver line, circuit, antenna losses. $L^{dB}_{PATH}$ is the propagation path loss between transmitter and receiver antennas in open space. In the simulator, it is assumed that sum of system gains $G^{dB}_{SYS}$ and system losses $L^{dB}_{SYS}$ is +7 dB.
 
-\begin{table}
-\centering
-\caption{EU863-870 ISM band LoRa default channels \cite{lorawan.regional.parameters}.}
-\label{table:max_tx_power}
-\begin{tabular}{|c|c|c|}
-\hline
-\textbf{Frequency (MHz)} & \textbf{Bandwidth (kHz)} & \textbf{Max EIRP (dBm)} \\ \hline
-      868.1 &   125 &   14 \\ \hline
-      868.3 &   125 &   14 \\ \hline
-      868.5 &   125 &   14 \\ \hline
-\end{tabular}
-\end{table}
-
-Maximum transmit power for European ISM band LoRa default channels can be found in Table \ref{table:max_tx_power}. In the simulator, it is assumed that nodes always select maximum allowed transmit power, which is 14 dBm. Different channel transmissions are independent from each other. But, in this work we focus on SF orthogonality. Thus, only single channel transmissions are utilized in the simulator.
+In the simulator, it is assumed that nodes always select maximum allowed transmit power for European ISM band, which is 14 dBm \cite{lorawan.regional.parameters}. Different channel transmissions are independent from each other. But, in this work we focus on SF orthogonality. Thus, only single channel transmissions are utilized in the simulator.
 
 \begin{table}
 \centering
@@ -211,12 +198,7 @@ To calculate interfering power at receiver, we should consider the case where tw
 P_{rc,y}^{interf} = \dfrac{P_{rc,y}(t_{interf})}{t_{x}}
 \end{equation}
 
-Where $t_{x}$ is transmission duration of referenced signal. $t_{interf}$ is overlapping duration between referenced signal and interfering signal. Transmission duration of a packet can be calculated by data rate $R_{b}$ and packet size $PS$. Data rate of a LoRa transmission is already expressed in Equation \ref{eq:bit_rate_sf}. Duration of a LoRa transmission can be calculated as:
-
-\begin{equation} \label{eq:transmission_duration}
-t_{x} = \dfrac{8 \times PS|_{B}}{R_{b}|_{bps}}  \ s
-\end{equation}
-
+Where $t_{x}$ is transmission duration of referenced signal. $t_{interf}$ is overlapping duration between referenced signal and interfering signal. Transmission duration of a packet can be calculated by data rate $R_{b}$ and packet size $PS$. Data rate of a LoRa transmission is already expressed in Equation \ref{eq:bit_rate_sf}.
 
 \section{Simulation Results} \label{Simulation Results}
 For simulation results in this paper, global simulation parameters are set as follows: packet size = 60 Bytes, simulation duration = 3600 seconds and packet generation rate = 0.01 pps. First, single gateway and multiple gateway LoRaWAN network simulation results are presented to show correctness of the simulator, then, smart SF scheme simulation results are presented.
@@ -251,7 +233,7 @@ In Figure \ref{fig:gw_pdr}, PDR plots for various number of gateways are shown. 
 \end{figure}
 
 \subsection{Smart SF Schemes}
-PDR plots of the lowest SF, random SF and the smart prediction schemes are shown in Figure \ref{fig:prediction_pdr}. Randomly generated network radius is set to 5000 meters and number of gateways is set to 3. Prediction model needs nodes' locations and three gateways are enough to locate position of nodes by triangulation. In Table \ref{table:prediction_pdr}, PDR values for various network radii are presented. Both smart SVM and smart DTC schemes give better PDR than lowest SF schemes when number of nodes increases. Increasing number of nodes, increases number of interferences. Smart schemes improve network performance when LoRa interference is high. Moreover, smart schemes give better results when nodes are deployed closer to the gateway, since nodes have margin to increase their SFs when they are deployed closer to the gateway. If a node is far away from gateway, then smart schemes cannot increase the SF to avoid interference since the assigned SF is already high.
+PDR and transmit energy consumption plots of the lowest SF, random SF and the smart prediction schemes are shown in Figure \ref{fig:prediction_pdr} and \ref{fig:prediction_energy}. Randomly generated network radius is set to 5000 meters and number of gateways is set to 3. Prediction model needs nodes' locations and three gateways are enough to locate position of nodes by triangulation. In Table \ref{table:prediction_pdr}, PDR values for various network radii are presented. Random SF scheme consumes far more energy than others, therefore it is not feasible for real world deployments. As number of nodes increases, both smart SVM and smart DTC schemes consume slightly more energy than lowest SF scheme, however they give better PDR results in return. Increasing number of nodes, increases number of interferences. Smart schemes improve network performance when LoRa interference is high. Moreover, smart schemes give better PDR results when nodes are deployed closer to the gateway, since nodes have margin to increase their SFs when they are deployed closer to the gateway. If a node is far away from gateway, then smart schemes cannot increase the SF to avoid interference since the assigned SF is already high.
 
 In Table \ref{table:prediction_accuracy}, prediction accuracy of smart SVM and smart DTC schemes are presented for various network radii and number of nodes. Prediction accuracy is not directly proportional to network PDR. Correct prediction of an interfered transmission may not increase the PDR but increases the prediction accuracy. Smart DTC gives better network PDR results than smart SVM, even overall smart SVM prediction accuracy is higher. The distribution of different labeled data points in the dataset is strongly related to simulation parameters. If simulation is run with small topology radius and high number of nodes, then number of interfered transmission labeled data points increases. On the other hand, using a large topology radius in the simulation causes the number of under sensitivity transmission labeled data points to increase. We choose moderately dense network parameters to bring it closer to real world deployments. With the simulation parameters utilized in this section, simulation usually produces imbalanced dataset. Number of under sensitivity transmission labeled data points are less than number of successful transmission labeled data points. Besides, number of interfered transmission labeled data points are even less then number of under sensitivity transmission labeled data points. In this case, smart DTC predicts interfered transmission labeled data points more accurately. Correct classification of interfered transmissions yields better network PDR results, thus smart DTC scheme gives better network PDR results.
 
@@ -260,6 +242,13 @@ In Table \ref{table:prediction_accuracy}, prediction accuracy of smart SVM and s
 \includegraphics[width=\linewidth]{{prediction_pdr_r5000_g3_p0.01_s3600}.png}
 \caption{PDR for lowest and smart SF schemes. (r = 5000 m, GW = 3)}
 \label{fig:prediction_pdr}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[width=\linewidth]{{prediction_energy_r5000_g3_p0.01_s3600}.png}
+\caption{TX energy for lowest and smart SF schemes. (r = 5000 m, GW = 3)}
+\label{fig:prediction_energy}
 \end{figure}
 
 \begin{table}
